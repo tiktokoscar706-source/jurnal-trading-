@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ApexTrade Journal - Pro Trading Journal</title>
-  <meta name="description" content="Jurnal trading profesional untuk akun Cent (USC) dan Standar.">
+  <title>ApexTrade Journal Pro - Jurnal Trading, Screenshot, Mood Music & AI</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
     body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #080d1a; color: #f1f5f9; }
     .mono { font-family: 'JetBrains Mono', monospace; }
   </style>
@@ -16,405 +15,792 @@
 <body class="min-h-screen flex flex-col bg-[#080d1a] text-slate-100">
 
   <!-- ================= LAYAR LOGIN ================= -->
-  <div id="authScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4">
-    <div class="w-full max-w-sm bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-4">
+  <div id="authScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-md p-4">
+    <div class="w-full max-w-sm bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4">
       <div class="text-center">
-        <div class="w-12 h-12 rounded-xl bg-sky-500/20 text-sky-400 mx-auto flex items-center justify-center text-xl font-bold mono mb-2">▲</div>
+        <div class="w-12 h-12 rounded-2xl bg-sky-500/20 text-sky-400 mx-auto flex items-center justify-center text-xl font-bold mono mb-2">▲</div>
         <h1 class="text-xl font-bold text-white">ApexTrade Journal</h1>
         <p class="text-xs text-slate-400">Pilih akses masuk Anda</p>
       </div>
 
-      <div class="space-y-2">
-        <label class="flex items-center justify-between p-3 rounded-xl border border-slate-800 bg-slate-950/60 cursor-pointer hover:border-sky-500/40">
-          <div class="flex items-center gap-2.5">
-            <span>📈</span>
-            <div><p class="text-sm font-semibold text-white">Akun Trader</p><p class="text-[11px] text-slate-400">Jurnal harian Cent & Standar</p></div>
+      <div class="space-y-2.5">
+        <label class="flex items-center justify-between p-3.5 rounded-2xl border border-slate-800 bg-slate-950/60 cursor-pointer hover:border-sky-500/40">
+          <div class="flex items-center gap-3">
+            <span class="text-xl">📈</span>
+            <div><p class="text-sm font-semibold text-white">Akun Trader Biasa</p><p class="text-[11px] text-slate-400">Jurnal transaksi, cent & chart</p></div>
           </div>
-          <input type="radio" name="authRole" value="trader" id="roleTrader" checked onchange="togglePin(false)">
+          <input type="radio" name="authRole" value="trader" id="roleTrader" checked onchange="handleRoleRadioChange()">
         </label>
 
-        <label class="flex items-center justify-between p-3 rounded-xl border border-slate-800 bg-slate-950/60 cursor-pointer hover:border-amber-500/40">
-          <div class="flex items-center gap-2.5">
-            <span>👑</span>
-            <div><p class="text-sm font-semibold text-amber-400">Super Admin</p><p class="text-[11px] text-slate-400">Kontrol risiko & audit</p></div>
+        <label class="flex items-center justify-between p-3.5 rounded-2xl border border-slate-800 bg-slate-950/60 cursor-pointer hover:border-amber-500/40">
+          <div class="flex items-center gap-3">
+            <span class="text-xl">👑</span>
+            <div><p class="text-sm font-semibold text-amber-400">Super Admin (Privat)</p><p class="text-[11px] text-slate-400">Proteksi sandi khusus Anda</p></div>
           </div>
-          <input type="radio" name="authRole" value="admin" id="roleAdmin" onchange="togglePin(true)">
+          <input type="radio" name="authRole" value="admin" id="roleAdmin" onchange="handleRoleRadioChange()">
         </label>
       </div>
 
-      <div id="pinBox" class="hidden">
-        <label class="block text-[11px] uppercase text-amber-400 font-bold mb-1">PIN Admin</label>
-        <input type="password" id="adminPin" value="admin123" placeholder="PIN: admin123" class="w-full bg-slate-950 border border-amber-500/40 rounded-xl px-3 py-2 text-xs mono">
+      <div id="adminPinBox" class="hidden space-y-1.5 pt-1">
+        <label id="pinBoxLabel" class="block text-[11px] uppercase font-bold text-amber-400">Masukkan Sandi Admin</label>
+        <input type="password" id="inputAdminPass" placeholder="Ketik sandi rahasia Anda..." class="w-full bg-slate-950 border border-amber-500/40 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:border-amber-400 mono">
+        <p id="pinHintText" class="text-[10px] text-slate-400">*Sandi yang Anda ketik pertama kali akan jadi sandi permanen Anda.</p>
       </div>
 
-      <button onclick="doLogin()" class="w-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold py-2.5 rounded-xl text-sm transition">
-        Masuk ke Workspace →
+      <button onclick="submitLogin()" class="w-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold py-3 rounded-2xl text-sm transition shadow-lg shadow-sky-500/20">
+        Buka Jurnal Trading →
       </button>
     </div>
   </div>
 
   <!-- ================= HEADER ATAS ================= -->
   <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-3">
-    <div class="max-w-6xl mx-auto flex items-center justify-between gap-2">
-      <div class="flex items-center gap-2 cursor-pointer" onclick="switchTab('dashboard')">
-        <span class="w-8 h-8 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold mono">▲</span>
+    <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
+      <div class="flex items-center gap-2 cursor-pointer" onclick="openView('dashboard')">
+        <span class="w-8 h-8 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold mono">▲</span>
         <div>
           <span class="font-bold text-sm text-white">ApexTrade</span>
-          <span id="roleBadge" class="text-[10px] px-1.5 py-0.5 rounded font-mono bg-sky-500/10 text-sky-400 border border-sky-500/20">TRADER</span>
+          <span id="roleIndicator" class="text-[10px] px-2 py-0.5 rounded-full font-mono bg-sky-500/10 text-sky-400 border border-sky-500/20">TRADER</span>
         </div>
       </div>
 
-      <!-- Currency Switcher -->
-      <div class="flex items-center gap-1.5 bg-slate-950 p-1 rounded-xl border border-slate-800 text-xs">
-        <button id="btnUSD" onclick="setCurr('USD')" class="px-2 py-0.5 rounded text-slate-400">USD</button>
-        <button id="btnUSC" onclick="setCurr('USC')" class="px-2 py-0.5 rounded bg-sky-500/20 text-sky-400 font-bold">CENT</button>
-        <button id="btnIDR" onclick="setCurr('IDR')" class="px-2 py-0.5 rounded text-slate-400">IDR</button>
-      </div>
+      <div class="flex items-center gap-2">
+        <div class="flex items-center bg-slate-950 border border-slate-800 rounded-xl p-1 text-xs">
+          <button id="currUSC" onclick="switchCurrency('USC')" class="px-2 py-0.5 rounded font-bold bg-sky-500/20 text-sky-400">CENT</button>
+          <button id="currUSD" onclick="switchCurrency('USD')" class="px-2 py-0.5 rounded text-slate-400">USD</button>
+          <button id="currIDR" onclick="switchCurrency('IDR')" class="px-2 py-0.5 rounded text-slate-400">IDR</button>
+        </div>
 
-      <button onclick="doLogout()" class="text-xs px-2.5 py-1 rounded-lg bg-slate-800 text-rose-400 hover:bg-rose-500/20">Keluar</button>
+        <button onclick="toggleSideMenu(true)" class="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center text-lg font-bold border border-slate-700" title="Menu Aplikasi">
+          ⋮
+        </button>
+      </div>
     </div>
   </header>
-  <!-- ================= NAVIGASI TABS ================= -->
-  <div class="max-w-6xl mx-auto w-full px-4 pt-3 flex gap-2 overflow-x-auto text-xs whitespace-nowrap">
-    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="tab-btn px-3 py-1.5 rounded-xl bg-sky-500/20 text-sky-400 border border-sky-500/30">📊 Dashboard</button>
-    <button onclick="switchTab('newTrade')" id="nav-newTrade" class="tab-btn px-3 py-1.5 rounded-xl bg-slate-900 text-slate-400 border border-slate-800">✍️ Catat Trade</button>
-    <button onclick="switchTab('journal')" id="nav-journal" class="tab-btn px-3 py-1.5 rounded-xl bg-slate-900 text-slate-400 border border-slate-800">📋 Jurnal</button>
-    <button onclick="switchTab('adminPanel')" id="nav-adminPanel" class="tab-btn hidden px-3 py-1.5 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/30">👑 Admin Console</button>
-    <button onclick="switchTab('settings')" id="nav-settings" class="tab-btn px-3 py-1.5 rounded-xl bg-slate-900 text-slate-400 border border-slate-800">⚙️ Pengaturan</button>
+    <!-- ================= DRAWER MENU TITIK TIGA (⋮) ================= -->
+  <div id="sideMenuModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex justify-end">
+    <div class="w-72 max-w-full h-full bg-slate-900 border-l border-slate-800 p-5 flex flex-col justify-between space-y-4 shadow-2xl">
+      <div class="space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <h2 class="font-bold text-white text-base flex items-center gap-2">
+            <span>📋</span> Menu Pilihan
+          </h2>
+          <button onclick="toggleSideMenu(false)" class="text-slate-400 hover:text-white text-xl p-1">✕</button>
+        </div>
+
+        <nav class="space-y-1.5 text-xs font-medium">
+          <button onclick="selectMenu('dashboard')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left bg-sky-500/10 text-sky-400 border border-sky-500/20">
+            <span>📊</span> Dashboard Ekuitas
+          </button>
+          <button onclick="selectMenu('newTrade')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-slate-300 hover:bg-slate-800">
+            <span>✍️</span> Catat Trade & Bukti Chart
+          </button>
+          <button onclick="selectMenu('journal')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-slate-300 hover:bg-slate-800">
+            <span>📋</span> Riwayat Jurnal & Screenshot
+          </button>
+          <button onclick="selectMenu('musicPlayer')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-slate-300 hover:bg-slate-800">
+            <span>🎵</span> Musik Mood & Pemutar MP3
+          </button>
+          <button onclick="selectMenu('aiAssistant')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-slate-300 hover:bg-slate-800">
+            <span>🤖</span> AI Trading Mentor (Gemini)
+          </button>
+          <div id="adminMenuLink" class="hidden pt-2 border-t border-slate-800">
+            <button onclick="selectMenu('adminPanel')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-amber-400 bg-amber-500/10 border border-amber-500/30 font-bold">
+              <span>👑</span> Super Admin Console
+            </button>
+          </div>
+          <button onclick="selectMenu('settings')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-slate-300 hover:bg-slate-800">
+            <span>⚙️</span> Pengaturan Modal & Backup
+          </button>
+        </nav>
+      </div>
+
+      <div class="border-t border-slate-800 pt-3">
+        <button onclick="logoutSession()" class="w-full py-2.5 px-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-semibold flex items-center justify-center gap-2 hover:bg-rose-500/20">
+          <span>🚪</span> Keluar / Ganti Akun
+        </button>
+      </div>
+    </div>
   </div>
 
-  <!-- ================= KONTEN UTAMA ================= -->
+  <!-- ================= KONTEN HALAMAN ================= -->
   <main class="max-w-6xl mx-auto w-full flex-1 p-4 space-y-4">
 
     <!-- 1. DASHBOARD -->
-    <section id="tab-dashboard" class="space-y-4">
+    <section id="view-dashboard" class="space-y-4">
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-xl">
+        <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-2xl">
           <p class="text-[11px] text-slate-400">Total Net P&L</p>
-          <h2 id="kpiNetPnl" class="text-lg font-bold mono mt-1 text-emerald-400">+0.00</h2>
+          <h2 id="kpiNetPnl" class="text-lg sm:text-xl font-bold mono mt-1 text-emerald-400">+0.00</h2>
         </div>
-        <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-xl">
+        <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-2xl">
           <p class="text-[11px] text-slate-400">Win Rate</p>
-          <h2 id="kpiWinRate" class="text-lg font-bold mono mt-1 text-sky-400">0.0%</h2>
+          <h2 id="kpiWinRate" class="text-lg sm:text-xl font-bold mono mt-1 text-sky-400">0.0%</h2>
         </div>
-        <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-xl">
+        <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-2xl">
           <p class="text-[11px] text-slate-400">Profit Factor</p>
-          <h2 id="kpiPf" class="text-lg font-bold mono mt-1 text-slate-100">0.00</h2>
+          <h2 id="kpiProfitFactor" class="text-lg sm:text-xl font-bold mono mt-1 text-slate-100">0.00</h2>
         </div>
-        <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-xl">
-          <p class="text-[11px] text-slate-400">Total Trade</p>
-          <h2 id="kpiTotalTrades" class="text-lg font-bold mono mt-1 text-slate-100">0</h2>
+        <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-2xl">
+          <p class="text-[11px] text-slate-400">Total Eksekusi</p>
+          <h2 id="kpiTotalTrades" class="text-lg sm:text-xl font-bold mono mt-1 text-slate-100">0</h2>
         </div>
       </div>
 
-      <!-- Grafik Equity -->
-      <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-        <h3 class="text-xs font-bold text-slate-300 mb-2">Kurva Pertumbuhan Ekuitas (Equity Growth)</h3>
-        <div class="h-56"><canvas id="equityChart"></canvas></div>
+      <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-xs font-bold text-slate-200">Pertumbuhan Ekuitas Akun</h3>
+          <span class="text-[10px] text-slate-400 mono">Live Balance Curve</span>
+        </div>
+        <div class="h-60 w-full"><canvas id="equityChartCanvas"></canvas></div>
       </div>
     </section>
 
-    <!-- 2. CATAT TRADE BARU -->
-    <section id="tab-newTrade" class="hidden">
-      <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl max-w-lg mx-auto">
-        <h2 class="text-base font-bold text-white mb-4">Catat Transaksi Baru</h2>
-        <form onsubmit="saveTrade(event)" class="space-y-3 text-xs">
-          <div>
-            <label class="block text-slate-400 mb-1">Tipe Akun</label>
-            <select id="f_acc" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white">
-              <option value="CENT">Akun Cent (USC / ¢)</option>
-              <option value="STANDARD">Akun Standar ($ USD)</option>
-            </select>
-          </div>
-          <div class="grid grid-cols-2 gap-2">
+    <!-- 2. CATAT TRADE BARU + SCREENSHOT -->
+    <section id="view-newTrade" class="hidden">
+      <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl max-w-lg mx-auto space-y-4">
+        <div class="border-b border-slate-800 pb-3">
+          <h2 class="text-base font-bold text-white">Catat Transaksi & Bukti Setup</h2>
+          <p class="text-xs text-slate-400">Lengkapi data eksekusi dan lampirkan screenshot analisis</p>
+        </div>
+
+        <form onsubmit="handleTradeSubmit(event)" class="space-y-3.5 text-xs">
+          <div class="grid grid-cols-2 gap-2.5">
             <div>
-              <label class="block text-slate-400 mb-1">Pair/Aset</label>
-              <input id="f_pair" required placeholder="XAUUSD" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 uppercase mono">
+              <label class="block text-slate-400 mb-1">Tipe Akun</label>
+              <select id="formAccountType" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white">
+                <option value="CENT">Akun Cent (USC ¢)</option>
+                <option value="STANDARD">Akun Standar ($ USD)</option>
+              </select>
             </div>
             <div>
+              <label class="block text-slate-400 mb-1">Aset / Pair</label>
+              <input id="formPair" required placeholder="XAUUSD, EURUSD" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 uppercase mono text-white">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2.5">
+            <div>
               <label class="block text-slate-400 mb-1">Posisi</label>
-              <select id="f_dir" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5">
+              <select id="formDir" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5">
                 <option value="BUY">BUY</option>
                 <option value="SELL">SELL</option>
               </select>
             </div>
-          </div>
-          <div class="grid grid-cols-2 gap-2">
             <div>
-              <label class="block text-slate-400 mb-1">Lot Size</label>
-              <input type="number" step="0.01" id="f_lot" value="0.10" required class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 mono">
+              <label class="block text-slate-400 mb-1">Ukuran Lot</label>
+              <input type="number" step="0.01" id="formLot" value="0.10" required class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 mono">
             </div>
             <div>
-              <label class="block text-slate-400 mb-1">Hasil P&L (Cent/USD)</label>
-              <input type="number" step="any" id="f_pnl" required placeholder="Contoh: 300 atau -150" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 mono">
+              <label class="block text-slate-400 mb-1">Hasil P&L</label>
+              <input type="number" step="any" id="formPnl" required placeholder="Contoh: 350 / -100" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 mono">
             </div>
           </div>
           <div>
-            <label class="block text-slate-400 mb-1">Strategi / Setup</label>
-            <input id="f_strat" placeholder="SMC, Breakout, Scalping" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5">
+            <label class="block text-slate-400 mb-1">Strategi / Alasan Masuk</label>
+            <input id="formStrategy" placeholder="SMC, Breakout, FVG, Rejection Support" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5">
           </div>
-          <div>
-            <label class="block text-slate-400 mb-1">Catatan Evaluasi</label>
-            <input id="f_notes" placeholder="Konfirmasi H4 FVG, disiplin..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5">
+
+          <div class="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
+            <label class="block text-slate-300 font-semibold flex items-center justify-between">
+              <span>📸 Bukti Screenshot Chart Teknikal</span>
+              <span class="text-[10px] text-slate-500">Opsional</span>
+            </label>
+            <input type="file" id="formImageInput" accept="image/*" onchange="processImagePreview(event)" class="w-full text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:bg-sky-500/20 file:text-sky-400 cursor-pointer">
+            <div id="imagePreviewContainer" class="hidden pt-2">
+              <img id="imagePreviewEl" src="" alt="Bukti Chart" class="max-h-36 rounded-xl border border-slate-700 object-contain mx-auto">
+            </div>
           </div>
-          <button type="submit" class="w-full py-3 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl text-sm transition">
-            Simpan ke Jurnal
+
+          <button type="submit" class="w-full py-3 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-2xl text-sm transition shadow-lg shadow-sky-500/20">
+            Simpan ke Jurnal Transaksi
           </button>
         </form>
       </div>
     </section>
 
-    <!-- 3. JURNAL TRANSAKSI -->
-    <section id="tab-journal" class="hidden space-y-3">
-      <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl overflow-x-auto">
-        <table class="w-full text-left text-xs whitespace-nowrap">
-          <thead class="text-slate-500 border-b border-slate-800">
-            <tr>
-              <th class="pb-2">Waktu</th>
-              <th class="pb-2">Pair</th>
-              <th class="pb-2">Akun</th>
-              <th class="pb-2">Posisi</th>
-              <th class="pb-2">Lot</th>
-              <th class="pb-2 text-right">Hasil P&L</th>
-              <th class="pb-2 text-center">Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="journalTbody" class="divide-y divide-slate-800/60 mono"></tbody>
-        </table>
+    <!-- 3. JURNAL RIWAYAT & BUKTI SCREENSHOT -->
+    <section id="view-journal" class="hidden space-y-3">
+      <div class="bg-slate-900 border border-slate-800 p-4 rounded-3xl space-y-3">
+        <div class="flex items-center justify-between">
+          <h2 class="text-sm font-bold text-white">Riwayat Eksekusi Transaksi</h2>
+          <span class="text-xs text-slate-400" id="journalCountText">0 Transaksi</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs whitespace-nowrap">
+            <thead class="text-slate-500 border-b border-slate-800">
+              <tr>
+                <th class="pb-2.5">Waktu</th>
+                <th class="pb-2.5">Pair</th>
+                <th class="pb-2.5">Tipe</th>
+                <th class="pb-2.5">Posisi</th>
+                <th class="pb-2.5">Lot</th>
+                <th class="pb-2.5">Bukti Chart</th>
+                <th class="pb-2.5 text-right">Hasil P&L</th>
+                <th class="pb-2.5 text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="journalTbody" class="divide-y divide-slate-800/60 mono"></tbody>
+          </table>
+        </div>
       </div>
     </section>
 
-    <!-- 4. KHUSUS ADMIN CONSOLE -->
-    <section id="tab-adminPanel" class="hidden space-y-4">
-      <div class="p-3.5 bg-amber-500/10 border border-amber-500/30 rounded-xl text-amber-300 text-xs flex items-center justify-between">
-        <span>👑 Mode Super Admin Aktif</span>
-        <span class="mono text-[10px] bg-amber-500/20 px-2 py-0.5 rounded">UNRESTRICTED</span>
+    <!-- 4. FITUR MUSIK SESUAI MOOD & PUTAR MP3 DARI HP -->
+    <section id="view-musicPlayer" class="hidden">
+      <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl max-w-md mx-auto space-y-4">
+        <div class="text-center space-y-1">
+          <div class="w-14 h-14 rounded-2xl bg-sky-500/10 border border-sky-500/30 text-sky-400 flex items-center justify-center mx-auto text-2xl animate-pulse">
+            🎧
+          </div>
+          <h2 class="text-base font-bold text-white">Musik Trading & Mood Booster</h2>
+          <p class="text-xs text-slate-400">Pilih musik sesuai suasana hati Anda atau putar MP3 sendiri</p>
+        </div>
+
+        <!-- Pemutar Audio Global -->
+        <audio id="globalAudioPlayer" preload="none"></audio>
+
+        <!-- Pilihan Mood -->
+        <div class="space-y-2">
+          <label class="block text-[11px] font-bold uppercase text-slate-400">Pilih Mood Musik Online:</label>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <button onclick="playPresetMood('lofi')" id="mBtn-lofi" class="p-3 rounded-2xl border border-slate-800 bg-slate-950 hover:border-sky-500 text-left transition">
+              <span class="text-base">☕</span>
+              <p class="font-bold text-white mt-1">Chill Lo-Fi</p>
+              <p class="text-[10px] text-slate-500">Santai & tenang</p>
+            </button>
+
+            <button onclick="playPresetMood('rain')" id="mBtn-rain" class="p-3 rounded-2xl border border-slate-800 bg-slate-950 hover:border-sky-500 text-left transition">
+              <span class="text-base">🌧️</span>
+              <p class="font-bold text-white mt-1">Hujan Tenang</p>
+              <p class="text-[10px] text-slate-500">Redam stres & emosi</p>
+            </button>
+
+            <button onclick="playPresetMood('focus')" id="mBtn-focus" class="p-3 rounded-2xl border border-slate-800 bg-slate-950 hover:border-sky-500 text-left transition">
+              <span class="text-base">🧠</span>
+              <p class="font-bold text-white mt-1">Deep Focus</p>
+              <p class="text-[10px] text-slate-500">Konsentrasi penuh</p>
+            </button>
+
+            <button onclick="playPresetMood('synth')" id="mBtn-synth" class="p-3 rounded-2xl border border-slate-800 bg-slate-950 hover:border-sky-500 text-left transition">
+              <span class="text-base">⚡</span>
+              <p class="font-bold text-white mt-1">Upbeat / Hype</p>
+              <p class="text-[10px] text-slate-500">Semangat scalping</p>
+            </button>
+          </div>
+        </div>
+
+        <!-- Opsi Putar File MP3 Sendiri dari HP -->
+        <div class="p-3.5 bg-slate-950 rounded-2xl border border-slate-800 space-y-2 text-xs">
+          <label class="block text-slate-300 font-semibold flex items-center justify-between">
+            <span>📂 Putar Lagu MP3 dari HP Sendiri</span>
+            <span class="text-[10px] text-emerald-400">Hemat Kuota</span>
+          </label>
+          <input type="file" id="localAudioFile" accept="audio/*" onchange="playCustomUserAudio(event)" class="w-full text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:bg-sky-500/20 file:text-sky-400 cursor-pointer">
+        </div>
+        <!-- Kontrol Player -->
+        <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 text-center space-y-3">
+          <p id="playerTrackTitle" class="text-xs text-sky-400 font-medium">Belum ada musik diputar</p>
+          <div class="flex items-center justify-center gap-3">
+            <button onclick="toggleAudioPlayback()" id="mainPlayPauseBtn" class="px-6 py-2.5 bg-sky-500 text-slate-950 font-bold rounded-2xl text-xs shadow-lg shadow-sky-500/20">
+              ▶ Putar Musik
+            </button>
+          </div>
+        </div>
       </div>
-      <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3 text-xs">
-        <h3 class="font-bold text-white">Kontrol Risiko Global</h3>
+    </section>
+
+    <!-- 5. AI TRADING ASSISTANT (GEMINI) -->
+    <section id="view-aiAssistant" class="hidden">
+      <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl max-w-xl mx-auto space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">🤖</span>
+            <div>
+              <h2 class="text-sm font-bold text-white">AI Trading Mentor</h2>
+              <p class="text-[11px] text-slate-400">Asisten analisis teknikal, evaluasi R:R & psikologi</p>
+            </div>
+          </div>
+          <button onclick="promptGeminiApiKey()" class="text-[10px] px-2.5 py-1 rounded-xl bg-slate-800 border border-slate-700 text-sky-400 hover:text-white">
+            🔑 Set API Key
+          </button>
+        </div>
+
+        <div id="aiChatBox" class="h-64 overflow-y-auto space-y-3 p-3 bg-slate-950 rounded-2xl border border-slate-800 text-xs">
+          <div class="bg-slate-900 border border-slate-800 p-3 rounded-2xl text-slate-300">
+            👋 Halo! Saya asisten jurnal trading Anda. Anda bisa meminta saya mengevaluasi rasio Risk-to-Reward, mendiskusikan rencana entry, atau meninjau faktor psikologi transaksi Anda.
+          </div>
+        </div>
+
+        <div class="flex gap-2">
+          <input type="text" id="aiInputPrompt" placeholder="Tanya analisis pair, saran risk management..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-sky-500">
+          <button onclick="sendAiMessage()" class="px-4 py-2.5 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl text-xs">
+            Kirim
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. KHUSUS ADMIN CONSOLE -->
+    <section id="view-adminPanel" class="hidden space-y-4">
+      <div class="p-4 bg-amber-500/10 border border-amber-500/30 rounded-3xl text-amber-300 text-xs flex items-center justify-between">
         <div>
-          <label class="block text-slate-400 mb-1">Maksimal Transaksi Harian</label>
-          <input type="number" id="admMaxTrades" value="10" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 mono">
+          <h3 class="font-bold text-sm">👑 Konsol Super Admin</h3>
+          <p class="text-[11px] text-amber-400/80">Manajemen sandi, kontrol pembatasan risiko & audit database</p>
         </div>
-        <button onclick="saveAdminRules()" class="px-3 py-1.5 bg-amber-500 text-slate-950 font-bold rounded-lg">Simpan Batasan</button>
-        <div class="pt-3 border-t border-slate-800">
-          <button onclick="resetAllData()" class="px-3 py-1.5 bg-rose-500/20 text-rose-400 border border-rose-500/30 rounded-lg">Reset Semua Database</button>
+        <span class="mono text-[10px] bg-amber-500/20 px-2 py-1 rounded-xl">ROOT PRIVILEGE</span>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 text-xs">
+        <h4 class="font-bold text-white text-sm">Ganti Sandi Super Admin</h4>
+        <div class="space-y-2 max-w-sm">
+          <input type="password" id="newAdminPasswordInput" placeholder="Ketik sandi baru Anda..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 mono">
+          <button onclick="changeAdminPassword()" class="px-4 py-2 bg-amber-500 text-slate-950 font-bold rounded-xl">Simpan Sandi Baru</button>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800 space-y-2">
+          <h4 class="font-bold text-rose-400">Pembersihan Database</h4>
+          <p class="text-slate-400">Hapus data khusus akun ini tanpa memengaruhi akun lainnya.</p>
+          <button onclick="resetCurrentAccountData()" class="px-4 py-2 bg-rose-500/20 border border-rose-500/30 text-rose-400 rounded-xl font-bold">
+            Reset Data Akun Ini
+          </button>
         </div>
       </div>
-            </section>
-    <!-- 5. PENGATURAN -->
-    <section id="tab-settings" class="hidden space-y-3">
-      <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3 text-xs max-w-md">
-        <h3 class="font-bold text-white">Modal Awal</h3>
-        <input type="number" id="cfgBal" value="10000" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 mono">
-        <button onclick="saveBal()" class="px-3 py-1.5 bg-sky-500 text-slate-950 font-bold rounded-lg">Simpan Saldo</button>
-        <div class="pt-3 border-t border-slate-800 flex gap-2">
-          <button onclick="loadDemoData()" class="px-3 py-1.5 bg-slate-800 text-sky-400 rounded-lg">Muat Data Demo</button>
+    </section>
+
+    <!-- 7. PENGATURAN & BACKUP -->
+    <section id="view-settings" class="hidden space-y-4">
+      <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 text-xs max-w-md">
+        <h2 class="text-sm font-bold text-white">Modal Awal</h2>
+        <input type="number" id="settingBalanceInput" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 mono">
+        <button onclick="saveInitialBalance()" class="px-4 py-2 bg-sky-500 text-slate-950 font-bold rounded-xl">Simpan Saldo Awal</button>
+
+        <div class="pt-4 border-t border-slate-800 flex gap-2">
+          <button onclick="exportDataJson()" class="px-3.5 py-2 bg-slate-800 text-slate-200 rounded-xl border border-slate-700">📥 Ekspor Backup</button>
+          <button onclick="loadSampleTrades()" class="px-3.5 py-2 bg-slate-800 text-sky-400 rounded-xl border border-slate-700">💡 Muat Data Demo</button>
         </div>
       </div>
     </section>
 
   </main>
 
-  <!-- ================= FOOTER ================= -->
-  <footer class="mt-auto bg-slate-900 border-t border-slate-800 p-4 text-center text-xs text-slate-500">
-    <p>© 2026 ApexTrade Journal • Penyimpanan Lokal Aman</p>
-  </footer>
+  <!-- ================= MODAL LIHAT SCREENSHOT ================= -->
+  <div id="imageViewerModal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="max-w-2xl w-full bg-slate-900 border border-slate-800 rounded-3xl p-4 space-y-3 text-center">
+      <div class="flex justify-between items-center px-2">
+        <span class="text-xs font-bold text-white">Bukti Screenshot Analisis</span>
+        <button onclick="closeImageViewer()" class="text-slate-400 hover:text-white text-lg">✕</button>
+      </div>
+      <img id="viewerImageElement" src="" alt="Bukti Chart Penuh" class="max-h-[70vh] rounded-2xl mx-auto border border-slate-800 object-contain">
+    </div>
+  </div>
 
-  <!-- ================= JAVASCRIPT LENGKAP ================= -->
+  <!-- ================= JAVASCRIPT LOGIKA LENGKAP ================= -->
   <script>
-    let role = localStorage.getItem('at_role') || '';
-    let curr = localStorage.getItem('at_curr') || 'USC';
-    let trades = JSON.parse(localStorage.getItem('at_trades') || '[]');
-    let balance = Number(localStorage.getItem('at_bal') || 10000);
-    let chartInstance = null;
+    let currentRole = localStorage.getItem('apt_role') || '';
+    let currentCurrency = localStorage.getItem('apt_curr') || 'USC';
+    let currentImageBase64 = null;
+    let equityChartInstance = null;
+
+    // Sumber Mood Audio Online
+    const MOOD_AUDIO_URLS = {
+      lofi: { name: '☕ Lo-Fi Chill Beats', url: 'https://stream.zeno.fm/f3wvbbqmdg8uv' },
+      rain: { name: '🌧️ Suara Hujan Tenang', url: 'https://actions.google.com/sounds/v1/weather/rain_heavy.ogg' },
+      focus: { name: '🧠 Deep Focus Ambient', url: 'https://actions.google.com/sounds/v1/ambiences/humming_room.ogg' },
+      synth: { name: '⚡ Synthwave Energy', url: 'https://stream.zeno.fm/e3vvabqmdg8uv' }
+    };
+
+    function getTradeKey() { return `apt_trades_${currentRole || 'trader'}`; }
+    function getBalKey() { return `apt_bal_${currentRole || 'trader'}`; }
 
     document.addEventListener('DOMContentLoaded', () => {
-      if (role) {
+      if (currentRole) {
         document.getElementById('authScreen').classList.add('hidden');
-        applyRole();
+        setupRoleUI();
+        loadAndRender();
       }
-      document.getElementById('cfgBal').value = balance;
-      updateCurrUI();
-      render();
+      updateCurrencyUI();
     });
 
-    function togglePin(show) {
-      document.getElementById('pinBox').classList.toggle('hidden', !show);
+    // --- FITUR AUDIO & MOOD MUSIC ---
+    function playPresetMood(moodKey) {
+      const preset = MOOD_AUDIO_URLS[moodKey];
+      if (!preset) return;
+      const audio = document.getElementById('globalAudioPlayer');
+      audio.src = preset.url;
+      audio.loop = true;
+      audio.play().then(() => {
+        document.getElementById('playerTrackTitle').textContent = `Sedang Memutar: ${preset.name}`;
+        document.getElementById('mainPlayPauseBtn').textContent = '⏸ Jeda Musik';
+      }).catch(() => {
+        document.getElementById('playerTrackTitle').textContent = `Memuat aliran audio...`;
+      });
     }
 
-    function doLogin() {
+    function playCustomUserAudio(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const audio = document.getElementById('globalAudioPlayer');
+      audio.src = URL.createObjectURL(file);
+      audio.loop = true;
+      audio.play().then(() => {
+        document.getElementById('playerTrackTitle').textContent = `🎵 Memutar File HP: ${file.name}`;
+        document.getElementById('mainPlayPauseBtn').textContent = '⏸ Jeda Musik';
+      });
+    }
+
+    function toggleAudioPlayback() {
+      const audio = document.getElementById('globalAudioPlayer');
+      const btn = document.getElementById('mainPlayPauseBtn');
+      if (!audio.src) {
+        playPresetMood('lofi');
+        return;
+      }
+      if (audio.paused) {
+        audio.play();
+        btn.textContent = '⏸ Jeda Musik';
+      } else {
+        audio.pause();
+        btn.textContent = '▶ Lanjutkan Musik';
+      }
+    }
+    // --- SISTEM LOGIN & SANDI MANDIRI ---
+    function handleRoleRadioChange() {
+      const isAdmin = document.getElementById('roleAdmin').checked;
+      const pinBox = document.getElementById('adminPinBox');
+      const passInput = document.getElementById('inputAdminPass');
+      passInput.value = '';
+
+      if (isAdmin) {
+        pinBox.classList.remove('hidden');
+        const saved = localStorage.getItem('apt_admin_password');
+        if (!saved) {
+          document.getElementById('pinBoxLabel').textContent = 'Buat Sandi Admin Baru Anda';
+          document.getElementById('pinHintText').textContent = '*Sandi yang Anda ketik sekarang akan tersimpan sebagai sandi pribadi Anda.';
+        } else {
+          document.getElementById('pinBoxLabel').textContent = 'Masukkan Sandi Admin Anda';
+          document.getElementById('pinHintText').textContent = '*Ketik sandi rahasia yang telah Anda tetapkan.';
+        }
+      } else {
+        pinBox.classList.add('hidden');
+      }
+    }
+
+    function submitLogin() {
       const isAdmin = document.getElementById('roleAdmin').checked;
       if (isAdmin) {
-        const pin = document.getElementById('adminPin').value.trim();
-        if (pin !== 'admin123') { alert('PIN Admin salah! Gunakan: admin123'); return; }
-        role = 'admin';
-      } else {
-        role = 'trader';
-      }
-      localStorage.setItem('at_role', role);
-      document.getElementById('authScreen').classList.add('hidden');
-      applyRole();
-      render();
-    }
+        const pass = document.getElementById('inputAdminPass').value.trim();
+        if (!pass) { alert('Silakan ketik sandi admin Anda!'); return; }
 
-    function doLogout() {
-      localStorage.removeItem('at_role');
-      role = '';
-      document.getElementById('authScreen').classList.remove('hidden');
-    }
-
-    function applyRole() {
-      const b = document.getElementById('roleBadge');
-      const admNav = document.getElementById('nav-adminPanel');
-      if (role === 'admin') {
-        b.textContent = '👑 SUPER ADMIN';
-        b.className = 'text-[10px] px-1.5 py-0.5 rounded font-mono bg-amber-500/20 text-amber-400 border border-amber-500/30';
-        admNav.classList.remove('hidden');
-      } else {
-        b.textContent = 'TRADER';
-        b.className = 'text-[10px] px-1.5 py-0.5 rounded font-mono bg-sky-500/10 text-sky-400 border border-sky-500/20';
-        admNav.classList.add('hidden');
-      }
-    }
-
-    function switchTab(t) {
-      ['dashboard', 'newTrade', 'journal', 'adminPanel', 'settings'].forEach(id => {
-        const sec = document.getElementById(`tab-${id}`);
-        const btn = document.getElementById(`nav-${id}`);
-        if (sec) sec.classList.toggle('hidden', id !== t);
-        if (btn) {
-          btn.className = id === t 
-            ? 'tab-btn px-3 py-1.5 rounded-xl bg-sky-500/20 text-sky-400 border border-sky-500/30'
-            : 'tab-btn px-3 py-1.5 rounded-xl bg-slate-900 text-slate-400 border border-slate-800';
+        let saved = localStorage.getItem('apt_admin_password');
+        if (!saved) {
+          localStorage.setItem('apt_admin_password', pass);
+          alert('✅ Sandi Admin berhasil dibuat dan disimpan untuk Anda!');
+        } else if (saved !== pass) {
+          alert('❌ Sandi Admin salah! Coba lagi.');
+          return;
         }
+        currentRole = 'admin';
+      } else {
+        currentRole = 'trader';
+      }
+
+      localStorage.setItem('apt_role', currentRole);
+      document.getElementById('authScreen').classList.add('hidden');
+      setupRoleUI();
+      loadAndRender();
+    }
+
+    function logoutSession() {
+      localStorage.removeItem('apt_role');
+      currentRole = '';
+      toggleSideMenu(false);
+      document.getElementById('authScreen').classList.remove('hidden');
+      document.getElementById('inputAdminPass').value = '';
+    }
+
+    function setupRoleUI() {
+      const ind = document.getElementById('roleIndicator');
+      const admLink = document.getElementById('adminMenuLink');
+      if (currentRole === 'admin') {
+        ind.textContent = '👑 SUPER ADMIN';
+        ind.className = 'text-[10px] px-2 py-0.5 rounded-full font-mono bg-amber-500/20 text-amber-400 border border-amber-500/30';
+        admLink.classList.remove('hidden');
+      } else {
+        ind.textContent = 'TRADER';
+        ind.className = 'text-[10px] px-2 py-0.5 rounded-full font-mono bg-sky-500/10 text-sky-400 border border-sky-500/20';
+        admLink.classList.add('hidden');
+      }
+    }
+
+    // --- MENU TITIK TIGA (⋮) ---
+    function toggleSideMenu(open) {
+      document.getElementById('sideMenuModal').classList.toggle('hidden', !open);
+    }
+
+    function selectMenu(v) {
+      toggleSideMenu(false);
+      openView(v);
+    }
+
+    function openView(v) {
+      ['dashboard', 'newTrade', 'journal', 'musicPlayer', 'aiAssistant', 'adminPanel', 'settings'].forEach(id => {
+        const el = document.getElementById(`view-${id}`);
+        if (el) el.classList.toggle('hidden', id !== v);
       });
-      if (t === 'dashboard') renderChart();
+      if (v === 'dashboard') renderEquityChart();
     }
 
-    function setCurr(c) {
-      curr = c;
-      localStorage.setItem('at_curr', curr);
-      updateCurrUI();
-      render();
+    // --- UPLOAD SCREENSHOT ---
+    function processImagePreview(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width, height = img.height;
+          const maxDim = 600;
+          if (width > maxDim || height > maxDim) {
+            if (width > height) { height = Math.round((height * maxDim) / width); width = maxDim; }
+            else { width = Math.round((width * maxDim) / height); height = maxDim; }
+          }
+          canvas.width = width; canvas.height = height;
+          canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+          currentImageBase64 = canvas.toDataURL('image/jpeg', 0.65);
+          document.getElementById('imagePreviewEl').src = currentImageBase64;
+          document.getElementById('imagePreviewContainer').classList.remove('hidden');
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
     }
 
-    function updateCurrUI() {
-      ['USD', 'USC', 'IDR'].forEach(c => {
-        const b = document.getElementById(`btn${c}`);
-        b.className = c === curr ? 'px-2 py-0.5 rounded bg-sky-500/20 text-sky-400 font-bold' : 'px-2 py-0.5 rounded text-slate-400';
-      });
+    function openImageViewer(src) {
+      document.getElementById('viewerImageElement').src = src;
+      document.getElementById('imageViewerModal').classList.remove('hidden');
+    }
+    function closeImageViewer() {
+      document.getElementById('imageViewerModal').classList.add('hidden');
     }
 
-    function fmt(valUSD) {
-      if (curr === 'USC') return `${(valUSD * 100).toFixed(1)} ¢`;
-      if (curr === 'IDR') return `Rp ${(valUSD * 16000).toLocaleString('id-ID')}`;
-      return `$${valUSD.toFixed(2)}`;
+    // --- AI MENTOR (GEMINI) ---
+    function promptGeminiApiKey() {
+      const cur = localStorage.getItem('gemini_api_key') || '';
+      const key = prompt('Masukkan Gemini API Key gratis Anda (dapatkan di aistudio.google.com):', cur);
+      if (key !== null) { localStorage.setItem('gemini_api_key', key.trim()); alert('API Key tersimpan!'); }
     }
 
-    function saveTrade(e) {
+    async function sendAiMessage() {
+      const input = document.getElementById('aiInputPrompt');
+      const text = input.value.trim();
+      if (!text) return;
+      const box = document.getElementById('aiChatBox');
+      box.innerHTML += `<div class="bg-sky-500/20 text-sky-200 p-2.5 rounded-2xl text-right">${text}</div>`;
+      input.value = '';
+      box.scrollTop = box.scrollHeight;
+
+      const apiKey = localStorage.getItem('gemini_api_key');
+      if (!apiKey) {
+        setTimeout(() => {
+          box.innerHTML += `<div class="bg-slate-900 border border-slate-800 p-2.5 rounded-2xl text-slate-300">💡 <strong>Tips:</strong> Masukkan API Key Anda via tombol <strong>Set API Key</strong> di atas untuk jawaban penuh.<br><br>Saran: Batasi risiko maksimal 1–2% per transaksi dan selalu pasang Stop Loss!</div>`;
+          box.scrollTop = box.scrollHeight;
+        }, 500);
+        return;
+      }
+
+      box.innerHTML += `<div id="aiLoad" class="text-slate-500 italic p-2">Gemini sedang menganalisis...</div>`;
+      box.scrollTop = box.scrollHeight;
+
+      try {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ contents: [{ parts: [{ text: `Kamu adalah asisten trading profesional berpengalaman. Pertanyaan: ${text}` }] }] })
+        });
+        const data = await res.json();
+        document.getElementById('aiLoad')?.remove();
+        const ans = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Gagal memproses jawaban.';
+        box.innerHTML += `<div class="bg-slate-900 border border-slate-800 p-2.5 rounded-2xl text-slate-200">${ans.replace(/\n/g, '<br>')}</div>`;
+      } catch (e) {
+        document.getElementById('aiLoad')?.remove();
+        box.innerHTML += `<div class="bg-rose-500/20 text-rose-300 p-2.5 rounded-2xl">Koneksi Gemini gagal: Cek API Key atau internet.</div>`;
+      }
+      box.scrollTop = box.scrollHeight;
+    }
+
+    // --- FORM SIMPAN TRANSAKSI ---
+    function handleTradeSubmit(e) {
       e.preventDefault();
-      const acc = document.getElementById('f_acc').value;
-      const raw = parseFloat(document.getElementById('f_pnl').value) || 0;
+      const acc = document.getElementById('formAccountType').value;
+      const raw = parseFloat(document.getElementById('formPnl').value) || 0;
       const pnlUSD = acc === 'CENT' ? raw / 100 : raw;
-      trades.unshift({
+
+      const newTrade = {
         id: Date.now(),
         time: new Date().toLocaleDateString('id-ID'),
         acc,
-        pair: document.getElementById('f_pair').value.toUpperCase(),
-        dir: document.getElementById('f_dir').value,
-        lot: document.getElementById('f_lot').value,
+        pair: document.getElementById('formPair').value.toUpperCase().trim(),
+        dir: document.getElementById('formDir').value,
+        lot: document.getElementById('formLot').value,
+        strategy: document.getElementById('formStrategy').value.trim() || 'Umum',
         pnlUSD,
-        raw
-      });
-      localStorage.setItem('at_trades', JSON.stringify(trades));
-      e.target.reset();
-      switchTab('journal');
-      render();
-      }
+        raw,
+        screenshot: currentImageBase64
+      };
+    const trades = getTrades();
+      trades.unshift(newTrade);
+      localStorage.setItem(getTradeKey(), JSON.stringify(trades));
 
-    function delTrade(id) {
-      trades = trades.filter(t => t.id !== id);
-      localStorage.setItem('at_trades', JSON.stringify(trades));
-      render();
+      e.target.reset();
+      currentImageBase64 = null;
+      document.getElementById('imagePreviewContainer').classList.add('hidden');
+      loadAndRender();
+      openView('journal');
     }
 
-    function render() {
-      // KPI
+    function deleteTrade(id) {
+      if (confirm('Hapus transaksi ini dari riwayat?')) {
+        let trades = getTrades().filter(t => t.id !== id);
+        localStorage.setItem(getTradeKey(), JSON.stringify(trades));
+        loadAndRender();
+      }
+    }
+
+    // --- PERHITUNGAN & DATA ---
+    function getTrades() { return JSON.parse(localStorage.getItem(getTradeKey()) || '[]'); }
+    function getInitialBalance() { return Number(localStorage.getItem(getBalKey()) || 10000); }
+
+    function switchCurrency(c) {
+      currentCurrency = c;
+      localStorage.setItem('apt_curr', c);
+      updateCurrencyUI();
+      loadAndRender();
+    }
+
+    function updateCurrencyUI() {
+      ['USC', 'USD', 'IDR'].forEach(c => {
+        const btn = document.getElementById(`curr${c}`);
+        btn.className = c === currentCurrency ? 'px-2 py-0.5 rounded font-bold bg-sky-500/20 text-sky-400' : 'px-2 py-0.5 rounded text-slate-400';
+      });
+    }
+
+    function formatVal(valUSD) {
+      if (currentCurrency === 'USC') return `${(valUSD * 100).toFixed(1)} ¢`;
+      if (currentCurrency === 'IDR') return `Rp ${(valUSD * 16000).toLocaleString('id-ID')}`;
+      return `$${valUSD.toFixed(2)}`;
+    }
+
+    function loadAndRender() {
+      const trades = getTrades();
+      document.getElementById('settingBalanceInput').value = getInitialBalance();
+      document.getElementById('journalCountText').textContent = `${trades.length} Transaksi`;
+
       const totalUSD = trades.reduce((a, b) => a + b.pnlUSD, 0);
       const wins = trades.filter(t => t.pnlUSD > 0).length;
-      document.getElementById('kpiNetPnl').textContent = fmt(totalUSD);
-      document.getElementById('kpiNetPnl').className = `text-lg font-bold mono mt-1 ${totalUSD >= 0 ? 'text-emerald-400' : 'text-rose-400'}`;
+
+      const pnlEl = document.getElementById('kpiNetPnl');
+      pnlEl.textContent = formatVal(totalUSD);
+      pnlEl.className = `text-lg sm:text-xl font-bold mono mt-1 ${totalUSD >= 0 ? 'text-emerald-400' : 'text-rose-400'}`;
+
       document.getElementById('kpiWinRate').textContent = trades.length ? `${((wins / trades.length) * 100).toFixed(1)}%` : '0%';
       document.getElementById('kpiTotalTrades').textContent = trades.length;
 
-      // Table
-      const tb = document.getElementById('journalTbody');
-      tb.innerHTML = trades.length ? trades.map(t => `
-        <tr class="hover:bg-slate-900/40">
+      const grossW = trades.filter(t => t.pnlUSD > 0).reduce((a, b) => a + b.pnlUSD, 0);
+      const grossL = Math.abs(trades.filter(t => t.pnlUSD < 0).reduce((a, b) => a + b.pnlUSD, 0));
+      document.getElementById('kpiProfitFactor').textContent = grossL > 0 ? (grossW / grossL).toFixed(2) : (grossW > 0 ? 'MAX' : '0.00');
+
+      const tbody = document.getElementById('journalTbody');
+      tbody.innerHTML = trades.length ? trades.map(t => `
+        <tr class="hover:bg-slate-900/50">
           <td class="py-2.5 text-slate-400">${t.time}</td>
           <td class="py-2.5 font-bold text-white">${t.pair}</td>
           <td class="py-2.5 text-amber-400">${t.acc}</td>
-          <td class="py-2.5 ${t.dir === 'BUY' ? 'text-emerald-400' : 'text-rose-400'}">${t.dir}</td>
+          <td class="py-2.5 ${t.dir === 'BUY' ? 'text-emerald-400' : 'text-rose-400'} font-semibold">${t.dir}</td>
           <td class="py-2.5">${t.lot}</td>
-          <td class="py-2.5 text-right font-bold ${t.pnlUSD >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${fmt(t.pnlUSD)}</td>
-          <td class="py-2.5 text-center"><button onclick="delTrade(${t.id})" class="text-rose-400 text-xs">✕</button></td>
+          <td class="py-2.5">
+            ${t.screenshot ? `<button onclick="openImageViewer('${t.screenshot}')" class="px-2 py-0.5 rounded bg-sky-500/10 text-sky-400 border border-sky-500/30 text-[10px]">Lihat Chart 🔍</button>` : '<span class="text-slate-600">-</span>'}
+          </td>
+          <td class="py-2.5 text-right font-bold ${t.pnlUSD >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${formatVal(t.pnlUSD)}</td>
+          <td class="py-2.5 text-center">
+            <button onclick="deleteTrade(${t.id})" class="text-rose-400 hover:text-rose-300 text-xs px-2 py-1">✕</button>
+          </td>
         </tr>
-      `).join('') : '<tr><td colspan="7" class="py-4 text-center text-slate-500">Belum ada transaksi</td></tr>';
+      `).join('') : '<tr><td colspan="8" class="py-4 text-center text-slate-500">Belum ada catatan transaksi</td></tr>';
 
-      renderChart();
+      renderEquityChart();
     }
 
-    function renderChart() {
-      const ctx = document.getElementById('equityChart');
+    function renderEquityChart() {
+      const ctx = document.getElementById('equityChartCanvas');
       if (!ctx) return;
-      if (chartInstance) chartInstance.destroy();
-      let cum = balance;
+      if (equityChartInstance) equityChartInstance.destroy();
+
+      let cum = getInitialBalance();
       let pts = [cum];
       let lbs = ['0'];
-      [...trades].reverse().forEach((t, i) => {
-        cum += (curr === 'USC' ? t.pnlUSD * 100 : t.pnlUSD);
+      [...getTrades()].reverse().forEach((t, i) => {
+        cum += (currentCurrency === 'USC' ? t.pnlUSD * 100 : t.pnlUSD);
         pts.push(cum);
         lbs.push(`#${i+1}`);
       });
-      chartInstance = new Chart(ctx, {
+
+      equityChartInstance = new Chart(ctx, {
         type: 'line',
         data: {
           labels: lbs,
-          datasets: [{ data: pts, borderColor: '#38bdf8', backgroundColor: 'rgba(56,189,248,0.1)', fill: true, tension: 0.2 }]
+          datasets: [{ data: pts, borderColor: '#38bdf8', backgroundColor: 'rgba(56,189,248,0.1)', fill: true, tension: 0.25 }]
         },
         options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
       });
     }
 
-    function saveBal() {
-      balance = Number(document.getElementById('cfgBal').value) || 10000;
-      localStorage.setItem('at_bal', balance);
-      render();
-      alert('Saldo disimpan!');
+    // --- PENGATURAN & ADMIN ---
+    function changeAdminPassword() {
+      const p = document.getElementById('newAdminPasswordInput').value.trim();
+      if (!p) { alert('Sandi tidak boleh kosong!'); return; }
+      localStorage.setItem('apt_admin_password', p);
+      document.getElementById('newAdminPasswordInput').value = '';
+      alert('✅ Sandi Admin Anda berhasil diganti!');
     }
 
-    function loadDemoData() {
-      trades = [
-        { id: 1, time: '1/10', acc: 'CENT', pair: 'XAUUSD', dir: 'BUY', lot: '0.10', pnlUSD: 15, raw: 1500 },
-        { id: 2, time: '2/10', acc: 'STANDARD', pair: 'EURUSD', dir: 'SELL', lot: '0.50', pnlUSD: -50, raw: -50 },
-        { id: 3, time: '3/10', acc: 'CENT', pair: 'GBPUSD', dir: 'BUY', lot: '0.20', pnlUSD: 25, raw: 2500 }
+    function resetCurrentAccountData() {
+      if (confirm(`Yakin ingin mereset seluruh data khusus akun ${currentRole.toUpperCase()} ini?`)) {
+        localStorage.removeItem(getTradeKey());
+        loadAndRender();
+        alert('Data akun ini telah dibersihkan.');
+      }
+    }
+
+    function saveInitialBalance() {
+      const val = Number(document.getElementById('settingBalanceInput').value) || 10000;
+      localStorage.setItem(getBalKey(), val);
+      loadAndRender();
+      alert('Saldo awal berhasil disimpan!');
+    }
+
+    function loadSampleTrades() {
+      const samples = [
+        { id: 1, time: '1/10', acc: 'CENT', pair: 'XAUUSD', dir: 'BUY', lot: 0.10, strategy: 'SMC FVG', pnlUSD: 15, raw: 1500, screenshot: null },
+        { id: 2, time: '2/10', acc: 'STANDARD', pair: 'EURUSD', dir: 'SELL', lot: 0.50, strategy: 'Breakout', pnlUSD: -50, raw: -50, screenshot: null },
+        { id: 3, time: '3/10', acc: 'CENT', pair: 'GBPUSD', dir: 'BUY', lot: 0.20, strategy: 'Trend Pullback', pnlUSD: 25, raw: 2500, screenshot: null }
       ];
-      localStorage.setItem('at_trades', JSON.stringify(trades));
-      render();
+      localStorage.setItem(getTradeKey(), JSON.stringify(samples));
+      loadAndRender();
       alert('Data demo dimuat!');
     }
 
-    function saveAdminRules() { alert('Aturan admin tersimpan.'); }
-    function resetAllData() {
-      if (confirm('Reset semua data?')) {
-        trades = [];
-        localStorage.removeItem('at_trades');
-        render();
-      }
+    function exportDataJson() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(getTrades(), null, 2));
+      const a = document.createElement('a');
+      a.setAttribute("href", dataStr);
+      a.setAttribute("download", `ApexTrade_Backup_${currentRole}.json`);
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
     }
   </script>
 </body>
 </html>
-    
-                # jurnal-trading-
