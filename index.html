@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ApexTrade Journal Pro - Jurnal Trading, Screenshot, Mood Music & AI</title>
+  <title>ApexTrade Journal Pro - Jurnal, Evaluasi News, Broker WikiFX & Edukasi</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
@@ -14,13 +14,13 @@
 </head>
 <body class="min-h-screen flex flex-col bg-[#080d1a] text-slate-100">
 
-  <!-- ================= LAYAR LOGIN ================= -->
+  <!-- ================= LAYAR LOGIN MANDIRI ================= -->
   <div id="authScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-md p-4">
     <div class="w-full max-w-sm bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4">
       <div class="text-center">
         <div class="w-12 h-12 rounded-2xl bg-sky-500/20 text-sky-400 mx-auto flex items-center justify-center text-xl font-bold mono mb-2">▲</div>
         <h1 class="text-xl font-bold text-white">ApexTrade Journal</h1>
-        <p class="text-xs text-slate-400">Pilih akses masuk Anda</p>
+        <p class="text-xs text-slate-400">Pilih akses masuk akun Anda</p>
       </div>
 
       <div class="space-y-2.5">
@@ -42,9 +42,9 @@
       </div>
 
       <div id="adminPinBox" class="hidden space-y-1.5 pt-1">
-        <label id="pinBoxLabel" class="block text-[11px] uppercase font-bold text-amber-400">Masukkan Sandi Admin</label>
+        <label id="pinBoxLabel" class="block text-[11px] uppercase font-bold text-amber-400">Sandi Admin</label>
         <input type="password" id="inputAdminPass" placeholder="Ketik sandi rahasia Anda..." class="w-full bg-slate-950 border border-amber-500/40 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:border-amber-400 mono">
-        <p id="pinHintText" class="text-[10px] text-slate-400">*Sandi yang Anda ketik pertama kali akan jadi sandi permanen Anda.</p>
+        <p id="pinHintText" class="text-[10px] text-slate-400">*Sandi pertama kali akan jadi sandi permanen Anda.</p>
       </div>
 
       <button onclick="submitLogin()" class="w-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold py-3 rounded-2xl text-sm transition shadow-lg shadow-sky-500/20">
@@ -71,24 +71,24 @@
           <button id="currIDR" onclick="switchCurrency('IDR')" class="px-2 py-0.5 rounded text-slate-400">IDR</button>
         </div>
 
-        <button onclick="toggleSideMenu(true)" class="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center text-lg font-bold border border-slate-700" title="Menu Aplikasi">
+        <button onclick="toggleSideMenu(true)" class="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center text-lg font-bold border border-slate-700" title="Menu Lengkap">
           ⋮
         </button>
       </div>
     </div>
   </header>
-    <!-- ================= DRAWER MENU TITIK TIGA (⋮) ================= -->
+
+  <!-- ================= DRAWER MENU LENGKAP TITIK TIGA (⋮) ================= -->
   <div id="sideMenuModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex justify-end">
-    <div class="w-72 max-w-full h-full bg-slate-900 border-l border-slate-800 p-5 flex flex-col justify-between space-y-4 shadow-2xl">
+    <div class="w-72 max-w-full h-full bg-slate-900 border-l border-slate-800 p-5 flex flex-col justify-between space-y-4 shadow-2xl overflow-y-auto">
       <div class="space-y-4">
         <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-          <h2 class="font-bold text-white text-base flex items-center gap-2">
-            <span>📋</span> Menu Pilihan
-          </h2>
+          <h2 class="font-bold text-white text-base flex items-center gap-2"><span>🧭</span> Menu Navigasi</h2>
           <button onclick="toggleSideMenu(false)" class="text-slate-400 hover:text-white text-xl p-1">✕</button>
         </div>
 
         <nav class="space-y-1.5 text-xs font-medium">
+          <p class="text-[10px] uppercase font-bold text-slate-500 px-2 pt-1">Jurnal & Eksekusi</p>
           <button onclick="selectMenu('dashboard')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left bg-sky-500/10 text-sky-400 border border-sky-500/20">
             <span>📊</span> Dashboard Ekuitas
           </button>
@@ -96,13 +96,26 @@
             <span>✍️</span> Catat Trade & Bukti Chart
           </button>
           <button onclick="selectMenu('journal')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-slate-300 hover:bg-slate-800">
-            <span>📋</span> Riwayat Jurnal & Screenshot
+            <span>📋</span> Riwayat Transaksi Jurnal
+          </button>
+
+          <p class="text-[10px] uppercase font-bold text-slate-500 px-2 pt-2">Market & Fundamental</p>
+          <button onclick="selectMenu('newsArchive')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-slate-300 hover:bg-slate-800">
+            <span>📰</span> Arsip & Evaluasi News
+          </button>
+          <button onclick="selectMenu('brokerWiki')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-slate-300 hover:bg-slate-800">
+            <span>🏦</span> Rekomendasi Broker (WikiFX)
+          </button>
+          <button onclick="selectMenu('learningHub')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-slate-300 hover:bg-slate-800">
+            <span>🎓</span> Belajar Forex Tiap Metode
+          </button>
+
+          <p class="text-[10px] uppercase font-bold text-slate-500 px-2 pt-2">Fitur Tambahan</p>
+          <button onclick="selectMenu('aiAssistant')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-slate-300 hover:bg-slate-800">
+            <span>🤖</span> AI Mentor (Multi-LLM)
           </button>
           <button onclick="selectMenu('musicPlayer')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-slate-300 hover:bg-slate-800">
             <span>🎵</span> Musik Mood & Pemutar MP3
-          </button>
-          <button onclick="selectMenu('aiAssistant')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-slate-300 hover:bg-slate-800">
-            <span>🤖</span> AI Trading Mentor (Gemini)
           </button>
           <div id="adminMenuLink" class="hidden pt-2 border-t border-slate-800">
             <button onclick="selectMenu('adminPanel')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-amber-400 bg-amber-500/10 border border-amber-500/30 font-bold">
@@ -113,9 +126,8 @@
             <span>⚙️</span> Pengaturan Modal & Backup
           </button>
         </nav>
-      </div>
-
-      <div class="border-t border-slate-800 pt-3">
+              </div>
+              <div class="border-t border-slate-800 pt-3">
         <button onclick="logoutSession()" class="w-full py-2.5 px-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-semibold flex items-center justify-center gap-2 hover:bg-rose-500/20">
           <span>🚪</span> Keluar / Ganti Akun
         </button>
@@ -196,6 +208,7 @@
               <input type="number" step="any" id="formPnl" required placeholder="Contoh: 350 / -100" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 mono">
             </div>
           </div>
+
           <div>
             <label class="block text-slate-400 mb-1">Strategi / Alasan Masuk</label>
             <input id="formStrategy" placeholder="SMC, Breakout, FVG, Rejection Support" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5">
@@ -219,7 +232,7 @@
       </div>
     </section>
 
-    <!-- 3. JURNAL RIWAYAT & BUKTI SCREENSHOT -->
+    <!-- 3. JURNAL RIWAYAT TRANSAKSI -->
     <section id="view-journal" class="hidden space-y-3">
       <div class="bg-slate-900 border border-slate-800 p-4 rounded-3xl space-y-3">
         <div class="flex items-center justify-between">
@@ -245,9 +258,301 @@
           </table>
         </div>
       </div>
+                </section>
+                <!-- 4. ARSIP & EVALUASI DATA NEWS FUNDAMENTAL (FITUR BARU) -->
+    <section id="view-newsArchive" class="hidden space-y-4">
+      <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+          <div>
+            <h2 class="text-sm sm:text-base font-bold text-white flex items-center gap-2">
+              <span>📰</span> Arsip & Evaluasi Rilis News Makroekonomi
+            </h2>
+            <p class="text-xs text-slate-400">Simpan rilis data ekonomi (CPI, NFP, Suku Bunga) untuk evaluasi pola reaksi di rilis mendatang</p>
+          </div>
+          <button onclick="loadSampleNewsData()" class="px-3 py-1.5 bg-sky-500/10 border border-sky-500/30 text-sky-400 text-xs font-semibold rounded-xl hover:bg-sky-500/20 self-start sm:self-auto">
+            💡 Muat Sampel Data News
+          </button>
+        </div>
+
+        <!-- Formulir Input Hasil Berita -->
+        <form onsubmit="handleSaveNews(event)" class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-3 text-xs">
+          <h3 class="font-bold text-slate-200">Catat Hasil Rilis Berita Baru:</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+            <div>
+              <label class="block text-slate-400 mb-1">Nama Event / Berita</label>
+              <input id="newsEvent" required placeholder="Contoh: US Non-Farm Payrolls (NFP), US Core CPI" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-white">
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">Mata Uang / Pair Terdampak</label>
+              <input id="newsCurrency" required placeholder="Contoh: USD (XAUUSD / EURUSD)" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 uppercase mono text-white">
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">Tanggal Rilis</label>
+              <input type="date" id="newsDate" required class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-white">
+            </div>
+          </div>
+
+          <!-- Parameter Angka: Previous, Forecast, Actual -->
+          <div class="grid grid-cols-3 gap-2.5">
+            <div>
+              <label class="block text-slate-400 mb-1">Previous (Lalu)</label>
+              <input id="newsPrev" required placeholder="Misal: 142K / 3.2%" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 mono text-white">
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">Forecast (Konsensus)</label>
+              <input id="newsForecast" required placeholder="Misal: 150K / 3.1%" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 mono text-white">
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">Actual (Rilis Nyata)</label>
+              <input id="newsActual" required placeholder="Misal: 254K / 2.9%" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 mono text-white">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-slate-400 mb-1">Status Deviasi Hasil</label>
+              <select id="newsDeviation" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-white">
+                <option value="BULLISH_BETTER">🟢 Jauh Lebih Bagus dari Ekspektasi (Strong)</option>
+                <option value="BEARISH_WORSE">🔴 Jauh Lebih Buruk dari Ekspektasi (Weak)</option>
+                <option value="NEUTRAL_AS_EXPECTED">⚪ Sesuai Ekspektasi / Tipis (In Line)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">Karakter Perilaku Pasar (Price Action)</label>
+              <select id="newsMarketBehavior" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-white">
+                <option value="Spike Turun lalu Reversal Naik">⚡ Spike Turun lalu Reversal Kuat ke Atas</option>
+                <option value="Spike Naik lalu Reversal Turun">⚡ Spike Naik lalu Reversal Kuat ke Bawah</option>
+                <option value="Rally Kuat Satu Arah (Trending)">🚀 Rally Kuat Satu Arah (Tanpa Pullback)</option>
+                <option value="Dump Kuat Satu Arah (Trending)">📉 Dump Kuat Satu Arah (Tanpa Pullback)</option>
+                <option value="Whipsaw / Bolak-balik (Choppy)">🔄 Whipsaw / Sapu Atas Bawah (Choppy)</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-slate-400 mb-1">Catatan Evaluasi Detail (Penting untuk Rilis Mendatang)</label>
+            <textarea id="newsNotes" rows="2" placeholder="Contoh: XAUUSD sempat anjlok 90 pip dalam 3 menit pertama menguji support 2610, lalu berbalik naik 180 pip setelah pidato konferensi pers..." class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-white"></textarea>
+          </div>
+
+          <button type="submit" class="w-full py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-xs transition">
+            💾 Simpan Hasil News ke Arsip Evaluasi
+          </button>
+        </form>
+
+        <!-- Tabel Riwayat News -->
+        <div class="overflow-x-auto pt-2">
+          <table class="w-full text-left text-xs whitespace-nowrap">
+            <thead class="text-slate-500 border-b border-slate-800">
+              <tr>
+                <th class="pb-2.5">Tanggal</th>
+                <th class="pb-2.5">Event News</th>
+                <th class="pb-2.5">Aset</th>
+                <th class="pb-2.5">Prev / Forecast / Actual</th>
+                <th class="pb-2.5">Reaksi Market</th>
+                <th class="pb-2.5">Evaluasi & Catatan</th>
+                <th class="pb-2.5 text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="newsArchiveTbody" class="divide-y divide-slate-800/60 mono"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    <!-- 5. REKOMENDASI BROKER & BENCHMARK WIKIFX (FITUR BARU) -->
+    <section id="view-brokerWiki" class="hidden space-y-4">
+      <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 text-xs">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+          <div>
+            <h2 class="text-base font-bold text-white flex items-center gap-2">
+              <span>🏦</span> Direktori Broker & Standar Keamanan WikiFX
+            </h2>
+            <p class="text-slate-400">Panduan perbandingan broker terpopuler berdasarkan regulasi tier-1 dan akun Cent</p>
+          </div>
+          <a href="https://www.wikifx.com/id/" target="_blank" class="px-3 py-1.5 bg-amber-500/10 border border-amber-500/30 text-amber-400 font-bold rounded-xl hover:bg-amber-500/20 self-start sm:self-auto flex items-center gap-1.5">
+            <span>🔍</span> Cek Skor di WikiFX Resmi ↗
+          </a>
+        </div>
+
+        <div class="p-3 bg-amber-500/10 border border-amber-500/20 rounded-2xl text-amber-300">
+          <strong>💡 Tips Kepatuhan & Keamanan WikiFX:</strong> Pastikan selalu memilih broker dengan skor WikiFX minimal di atas 7.0/10 dan memegang lisensi regulator Tier-1 (seperti FCA Inggris, ASIC Australia) atau berizin resmi Bappebti untuk pasar Indonesia.
+        </div>
+
+        <!-- Tabel Perbandingan Broker -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left whitespace-nowrap">
+            <thead class="text-slate-400 border-b border-slate-800 bg-slate-950/60">
+              <tr>
+                <th class="p-3">Nama Broker</th>
+                <th class="p-3">Kategori Broker</th>
+                <th class="p-3">Dukungan Akun Cent</th>
+                <th class="p-3">Lisensi & Regulasi</th>
+                <th class="p-3">Spesifikasi Spread</th>
+                <th class="p-3">Verifikasi</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60">
+              <tr class="hover:bg-slate-950/40">
+                <td class="p-3 font-bold text-white">Exness</td>
+                <td class="p-3 text-sky-400">Multi-Regulasi Global</td>
+                <td class="p-3"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">Standard Cent (USC)</span></td>
+                <td class="p-3 text-slate-300">FCA (UK), CySEC, FSCA</td>
+                <td class="p-3 text-slate-400">Mulai 0.3 pip (Low Spread)</td>
+                <td class="p-3"><a href="https://www.wikifx.com/id/dealer/0001390005.html" target="_blank" class="text-sky-400 hover:underline">Lihat WikiFX ↗</a></td>
+              </tr>
+              <tr class="hover:bg-slate-950/40">
+                <td class="p-3 font-bold text-white">IC Markets</td>
+                <td class="p-3 text-sky-400">True ECN / Scalping</td>
+                <td class="p-3"><span class="text-slate-500">Hanya Standard & Raw</span></td>
+                <td class="p-3 text-slate-300">ASIC (Australia), CySEC, SCB</td>
+                <td class="p-3 text-slate-400">Raw Spread mulai 0.0 pip</td>
+                <td class="p-3"><a href="https://www.wikifx.com/id/dealer/9641842942.html" target="_blank" class="text-sky-400 hover:underline">Lihat WikiFX ↗</a></td>
+              </tr>
+              <tr class="hover:bg-slate-950/40">
+                <td class="p-3 font-bold text-white">Markets4you / Forex4you</td>
+                <td class="p-3 text-sky-400">Spesialis Akun Cent</td>
+                <td class="p-3"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">Cent NDD & Cent Fixed</span></td>
+                <td class="p-3 text-slate-300">FSC BVI</td>
+                <td class="p-3 text-slate-400">Mulai 0.1 pip</td>
+                <td class="p-3"><a href="https://www.wikifx.com/id/dealer/0001222629.html" target="_blank" class="text-sky-400 hover:underline">Lihat WikiFX ↗</a></td>
+              </tr>
+              <tr class="hover:bg-slate-950/40">
+                <td class="p-3 font-bold text-white">XM Group</td>
+                <td class="p-3 text-sky-400">Retail Tradisional</td>
+                <td class="p-3"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">Akun Micro (Setara Cent)</span></td>
+                <td class="p-3 text-slate-300">ASIC, CySEC, DFSA</td>
+                <td class="p-3 text-slate-400">Ultra Low mulai 0.6 pip</td>
+                <td class="p-3"><a href="https://www.wikifx.com/id/dealer/0001404280.html" target="_blank" class="text-sky-400 hover:underline">Lihat WikiFX ↗</a></td>
+              </tr>
+              <tr class="hover:bg-slate-950/40">
+                <td class="p-3 font-bold text-white">MIFX (Monex Investindo)</td>
+                <td class="p-3 text-emerald-400">Broker Lokal Indonesia</td>
+                <td class="p-3"><span class="text-slate-500">Akun Micro 0.01 Lot</span></td>
+                <td class="p-3 text-slate-300">Bappebti (Resmi RI), ICDX</td>
+                <td class="p-3 text-slate-400">Mulai 0.2 pip</td>
+                <td class="p-3"><a href="https://www.wikifx.com/id/dealer/0001716949.html" target="_blank" class="text-sky-400 hover:underline">Lihat WikiFX ↗</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </section>
 
-    <!-- 4. FITUR MUSIK SESUAI MOOD & PUTAR MP3 DARI HP -->
+    <!-- 6. PUSAT EDUKASI FOREX PER METODE + TAUTAN AKTIF (FITUR BARU) -->
+    <section id="view-learningHub" class="hidden space-y-4">
+      <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 text-xs">
+        <div class="border-b border-slate-800 pb-3">
+          <h2 class="text-base font-bold text-white flex items-center gap-2">
+            <span>🎓</span> Pusat Belajar Trading Forex Terstruktur
+          </h2>
+          <p class="text-slate-400">Kurasi materi belajar gratis dari sumber terpercaya di dunia per metodologi</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- 1. Price Action -->
+          <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-white text-sm">1. Price Action & Dasar Market</span>
+              <span class="text-[10px] px-2 py-0.5 rounded bg-sky-500/10 text-sky-400">Fondasi</span>
+            </div>
+            <p class="text-slate-400 leading-relaxed">Mempelajari struktur Support/Resistance, tren market, dan konfirmasi pola candlestick tanpa bergantung indikator yang lagging.</p>
+            <div class="pt-2 space-y-1">
+              <a href="https://www.babypips.com/learn/forex" target="_blank" class="block text-sky-400 hover:underline">🔗 BabyPips School of Pipsology (Kurikulum Terlengkap Dunia) ↗</a>
+              <a href="https://www.dailyfx.com/forex/education/trading_tips/post_of_the_day/2012/05/18/Price_Action_Trading_Strategies.html" target="_blank" class="block text-sky-400 hover:underline">🔗 Panduan Strategi Price Action - DailyFX ↗</a>
+            </div>
+          </div>
+
+          <!-- 2. SMC & ICT -->
+          <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-white text-sm">2. Smart Money Concepts (SMC / ICT)</span>
+              <span class="text-[10px] px-2 py-0.5 rounded bg-amber-500/10 text-amber-400">Institusional</span>
+            </div>
+            <p class="text-slate-400 leading-relaxed">Memahami jejak institusi besar: Order Block (OB), Fair Value Gap (FVG), Liquidity Sweeps, dan pembagian sesi waktu (Killzones).</p>
+            <div class="pt-2 space-y-1">
+              <a href="https://www.youtube.com/@InnerCircleTrader/playlists" target="_blank" class="block text-sky-400 hover:underline">🔗 Saluran Resmi ICT 2022 Mentorship (YouTube) ↗</a>
+              <a href="https://www.investopedia.com/smart-money-5217983" target="_blank" class="block text-sky-400 hover:underline">🔗 Konsep Pergerakan Smart Money - Investopedia ↗</a>
+            </div>
+          </div>
+
+          <!-- 3. Supply & Demand -->
+          <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-white text-sm">3. Supply & Demand (SnD)</span>
+              <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400">Order Flow</span>
+            </div>
+            <p class="text-slate-400 leading-relaxed">Menemukan zona ketidakseimbangan order pembeli dan penjual melalui pola Drop-Base-Rally (DBR) dan Rally-Base-Drop (RBD).</p>
+            <div class="pt-2 space-y-1">
+              <a href="https://www.tradingwithrayner.com/supply-and-demand-trading/" target="_blank" class="block text-sky-400 hover:underline">🔗 Panduan Lengkap Supply and Demand - TradingwithRayner ↗</a>
+              <a href="https://www.forexlive.com/education" target="_blank" class="block text-sky-400 hover:underline">🔗 Materi Order Flow & SnD - ForexLive ↗</a>
+            </div>
+          </div>
+
+          <!-- 4. Fundamental & News -->
+          <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-white text-sm">4. Analisis Fundamental & Berita</span>
+              <span class="text-[10px] px-2 py-0.5 rounded bg-rose-500/10 text-rose-400">Makroekonomi</span>
+            </div>
+            <p class="text-slate-400 leading-relaxed">Mempelajari pengaruh data CPI (inflasi), suku bunga The Fed, NFP ketenagakerjaan, serta geopolitik terhadap mata uang dan emas.</p>
+            <div class="pt-2 space-y-1">
+              <a href="https://www.forexfactory.com/calendar" target="_blank" class="block text-sky-400 hover:underline">🔗 Kalender Ekonomi Terlengkap - Forex Factory ↗</a>
+              <a href="https://tradingeconomics.com/" target="_blank" class="block text-sky-400 hover:underline">🔗 Data Makroekonomi Global - Trading Economics ↗</a>
+            </div>
+          </div>
+
+          <!-- 5. Psikologi & Risk Management -->
+          <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2 md:col-span-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-white text-sm">5. Psikologi Trading & Manajemen Risiko (Paling Krusial)</span>
+              <span class="text-[10px] px-2 py-0.5 rounded bg-purple-500/10 text-purple-400">Mindset</span>
+            </div>
+            <p class="text-slate-400 leading-relaxed">Kunci konsistensi bukan prediksi masa depan, melainkan menerima ketidakpastian, membatasi risiko maksimal 1-2% per trade, dan disiplin aturan.</p>
+            <div class="pt-2 space-y-1">
+              <a href="https://www.youtube.com/results?search_query=trading+in+the+zone+mark+douglas+audiobook" target="_blank" class="block text-sky-400 hover:underline">🔗 Audiobook Ringkasan "Trading in the Zone" - Mark Douglas ↗</a>
+              <a href="https://www.myfxbook.com/forex-calculators/position-size-calculator" target="_blank" class="block text-sky-400 hover:underline">🔗 Kalkulator Ukuran Lot & Risiko - Myfxbook ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+      <!-- 7. FITUR AI MENTOR (MULTI-LLM) -->
+    <section id="view-aiAssistant" class="hidden">
+      <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl max-w-xl mx-auto space-y-4">
+        <div class="border-b border-slate-800 pb-3 space-y-2">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="text-2xl">🤖</span>
+              <div>
+                <h2 class="text-sm font-bold text-white">AI Trading Mentor</h2>
+                <p class="text-[11px] text-slate-400">Analisis strategi, evaluasi risiko & konsultasi market</p>
+              </div>
+            </div>
+            <button onclick="toggleLlmSettingsModal(true)" class="text-[10px] px-2.5 py-1.5 rounded-xl bg-sky-500/10 border border-sky-500/30 text-sky-400 font-bold hover:bg-sky-500/20">
+              ⚙️ Pengaturan AI
+            </button>
+          </div>
+          <div class="flex items-center justify-between bg-slate-950 p-2 rounded-xl text-[11px]">
+            <span class="text-slate-400">Provider Aktif:</span>
+            <span id="activeLlmBadge" class="font-bold text-emerald-400 mono">Google Gemini (Gratis)</span>
+          </div>
+        </div>
+
+        <div id="aiChatBox" class="h-64 overflow-y-auto space-y-3 p-3 bg-slate-950 rounded-2xl border border-slate-800 text-xs">
+          <div class="bg-slate-900 border border-slate-800 p-3 rounded-2xl text-slate-300">
+            👋 Halo! Saya asisten trading Anda. Anda bisa meminta saya mengevaluasi hasil rilis news, rencana entry, atau meninjau faktor psikologi transaksi Anda.
+          </div>
+        </div>
+
+        <div class="flex gap-2">
+          <input type="text" id="aiInputPrompt" placeholder="Tanya evaluasi data news, setup entry..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-sky-500">
+          <button onclick="sendMultiLlmMessage()" class="px-4 py-2.5 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl text-xs">
+            Kirim
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. MUSIK SESUAI MOOD & MP3 HP -->
     <section id="view-musicPlayer" class="hidden">
       <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl max-w-md mx-auto space-y-4">
         <div class="text-center space-y-1">
@@ -255,35 +560,30 @@
             🎧
           </div>
           <h2 class="text-base font-bold text-white">Musik Trading & Mood Booster</h2>
-          <p class="text-xs text-slate-400">Pilih musik sesuai suasana hati Anda atau putar MP3 sendiri</p>
+          <p class="text-xs text-slate-400">Pilih musik sesuai mood Anda atau putar MP3 sendiri dari galeri HP</p>
         </div>
 
-        <!-- Pemutar Audio Global -->
         <audio id="globalAudioPlayer" preload="none"></audio>
 
-        <!-- Pilihan Mood -->
         <div class="space-y-2">
-          <label class="block text-[11px] font-bold uppercase text-slate-400">Pilih Mood Musik Online:</label>
+          <label class="block text-[11px] font-bold uppercase text-slate-400">Pilihan Mood Online:</label>
           <div class="grid grid-cols-2 gap-2 text-xs">
-            <button onclick="playPresetMood('lofi')" id="mBtn-lofi" class="p-3 rounded-2xl border border-slate-800 bg-slate-950 hover:border-sky-500 text-left transition">
+            <button onclick="playPresetMood('lofi')" class="p-3 rounded-2xl border border-slate-800 bg-slate-950 hover:border-sky-500 text-left transition">
               <span class="text-base">☕</span>
               <p class="font-bold text-white mt-1">Chill Lo-Fi</p>
               <p class="text-[10px] text-slate-500">Santai & tenang</p>
             </button>
-
-            <button onclick="playPresetMood('rain')" id="mBtn-rain" class="p-3 rounded-2xl border border-slate-800 bg-slate-950 hover:border-sky-500 text-left transition">
+            <button onclick="playPresetMood('rain')" class="p-3 rounded-2xl border border-slate-800 bg-slate-950 hover:border-sky-500 text-left transition">
               <span class="text-base">🌧️</span>
               <p class="font-bold text-white mt-1">Hujan Tenang</p>
-              <p class="text-[10px] text-slate-500">Redam stres & emosi</p>
+              <p class="text-[10px] text-slate-500">Redam emosi/loss</p>
             </button>
-
-            <button onclick="playPresetMood('focus')" id="mBtn-focus" class="p-3 rounded-2xl border border-slate-800 bg-slate-950 hover:border-sky-500 text-left transition">
+            <button onclick="playPresetMood('focus')" class="p-3 rounded-2xl border border-slate-800 bg-slate-950 hover:border-sky-500 text-left transition">
               <span class="text-base">🧠</span>
               <p class="font-bold text-white mt-1">Deep Focus</p>
-              <p class="text-[10px] text-slate-500">Konsentrasi penuh</p>
+              <p class="text-[10px] text-slate-500">Fokus baca chart</p>
             </button>
-
-            <button onclick="playPresetMood('synth')" id="mBtn-synth" class="p-3 rounded-2xl border border-slate-800 bg-slate-950 hover:border-sky-500 text-left transition">
+            <button onclick="playPresetMood('synth')" class="p-3 rounded-2xl border border-slate-800 bg-slate-950 hover:border-sky-500 text-left transition">
               <span class="text-base">⚡</span>
               <p class="font-bold text-white mt-1">Upbeat / Hype</p>
               <p class="text-[10px] text-slate-500">Semangat scalping</p>
@@ -291,7 +591,6 @@
           </div>
         </div>
 
-        <!-- Opsi Putar File MP3 Sendiri dari HP -->
         <div class="p-3.5 bg-slate-950 rounded-2xl border border-slate-800 space-y-2 text-xs">
           <label class="block text-slate-300 font-semibold flex items-center justify-between">
             <span>📂 Putar Lagu MP3 dari HP Sendiri</span>
@@ -299,50 +598,17 @@
           </label>
           <input type="file" id="localAudioFile" accept="audio/*" onchange="playCustomUserAudio(event)" class="w-full text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:bg-sky-500/20 file:text-sky-400 cursor-pointer">
         </div>
-        <!-- Kontrol Player -->
+
         <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 text-center space-y-3">
           <p id="playerTrackTitle" class="text-xs text-sky-400 font-medium">Belum ada musik diputar</p>
-          <div class="flex items-center justify-center gap-3">
-            <button onclick="toggleAudioPlayback()" id="mainPlayPauseBtn" class="px-6 py-2.5 bg-sky-500 text-slate-950 font-bold rounded-2xl text-xs shadow-lg shadow-sky-500/20">
-              ▶ Putar Musik
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 5. AI TRADING ASSISTANT (GEMINI) -->
-    <section id="view-aiAssistant" class="hidden">
-      <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl max-w-xl mx-auto space-y-4">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-          <div class="flex items-center gap-2">
-            <span class="text-2xl">🤖</span>
-            <div>
-              <h2 class="text-sm font-bold text-white">AI Trading Mentor</h2>
-              <p class="text-[11px] text-slate-400">Asisten analisis teknikal, evaluasi R:R & psikologi</p>
-            </div>
-          </div>
-          <button onclick="promptGeminiApiKey()" class="text-[10px] px-2.5 py-1 rounded-xl bg-slate-800 border border-slate-700 text-sky-400 hover:text-white">
-            🔑 Set API Key
-          </button>
-        </div>
-
-        <div id="aiChatBox" class="h-64 overflow-y-auto space-y-3 p-3 bg-slate-950 rounded-2xl border border-slate-800 text-xs">
-          <div class="bg-slate-900 border border-slate-800 p-3 rounded-2xl text-slate-300">
-            👋 Halo! Saya asisten jurnal trading Anda. Anda bisa meminta saya mengevaluasi rasio Risk-to-Reward, mendiskusikan rencana entry, atau meninjau faktor psikologi transaksi Anda.
-          </div>
-        </div>
-
-        <div class="flex gap-2">
-          <input type="text" id="aiInputPrompt" placeholder="Tanya analisis pair, saran risk management..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-sky-500">
-          <button onclick="sendAiMessage()" class="px-4 py-2.5 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl text-xs">
-            Kirim
+          <button onclick="toggleAudioPlayback()" id="mainPlayPauseBtn" class="px-6 py-2.5 bg-sky-500 text-slate-950 font-bold rounded-2xl text-xs shadow-lg shadow-sky-500/20">
+            ▶ Putar Musik
           </button>
         </div>
       </div>
     </section>
 
-    <!-- 6. KHUSUS ADMIN CONSOLE -->
+    <!-- 9. KHUSUS ADMIN CONSOLE -->
     <section id="view-adminPanel" class="hidden space-y-4">
       <div class="p-4 bg-amber-500/10 border border-amber-500/30 rounded-3xl text-amber-300 text-xs flex items-center justify-between">
         <div>
@@ -369,7 +635,7 @@
       </div>
     </section>
 
-    <!-- 7. PENGATURAN & BACKUP -->
+    <!-- 10. PENGATURAN & BACKUP -->
     <section id="view-settings" class="hidden space-y-4">
       <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 text-xs max-w-md">
         <h2 class="text-sm font-bold text-white">Modal Awal</h2>
@@ -385,6 +651,38 @@
 
   </main>
 
+  <!-- ================= MODAL PENGATURAN MULTI-LLM ================= -->
+  <div id="llmSettingsModal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-slate-900 border border-slate-800 rounded-3xl p-5 space-y-4 text-xs">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <h3 class="font-bold text-white text-sm flex items-center gap-2"><span>⚙️</span> Konfigurasi Model AI</h3>
+        <button onclick="toggleLlmSettingsModal(false)" class="text-slate-400 hover:text-white text-base">✕</button>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-slate-400 mb-1">Pilih Provider AI</label>
+          <select id="llmProviderSelect" onchange="handleLlmProviderChange()" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white">
+            <option value="gemini">Google Gemini (Gratis & Direkomendasikan)</option>
+            <option value="groq">Groq / Llama 3.3 (Gratis & Sangat Cepat)</option>
+            <option value="openrouter">OpenRouter (DeepSeek / Multi-Model)</option>
+            <option value="openai">OpenAI (ChatGPT / GPT-4o-mini)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-slate-400 mb-1">API Key Provider Terpilih</label>
+          <input type="password" id="llmApiKeyInput" placeholder="Tempelkan API Key di sini..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white mono">
+          <p id="llmKeyHelpText" class="text-[10px] text-sky-400 mt-1 cursor-pointer hover:underline"></p>
+        </div>
+      </div>
+
+      <div class="pt-2 flex justify-end gap-2 border-t border-slate-800">
+        <button onclick="toggleLlmSettingsModal(false)" class="px-3 py-2 bg-slate-800 text-slate-300 rounded-xl">Batal</button>
+        <button onclick="saveLlmSettings()" class="px-4 py-2 bg-sky-500 text-slate-950 font-bold rounded-xl">Simpan Pengaturan</button>
+      </div>
+    </div>
+  </div>
   <!-- ================= MODAL LIHAT SCREENSHOT ================= -->
   <div id="imageViewerModal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
     <div class="max-w-2xl w-full bg-slate-900 border border-slate-800 rounded-3xl p-4 space-y-3 text-center">
@@ -403,7 +701,6 @@
     let currentImageBase64 = null;
     let equityChartInstance = null;
 
-    // Sumber Mood Audio Online
     const MOOD_AUDIO_URLS = {
       lofi: { name: '☕ Lo-Fi Chill Beats', url: 'https://stream.zeno.fm/f3wvbbqmdg8uv' },
       rain: { name: '🌧️ Suara Hujan Tenang', url: 'https://actions.google.com/sounds/v1/weather/rain_heavy.ogg' },
@@ -411,8 +708,16 @@
       synth: { name: '⚡ Synthwave Energy', url: 'https://stream.zeno.fm/e3vvabqmdg8uv' }
     };
 
+    const LLM_PROVIDERS = {
+      gemini: { name: 'Google Gemini (1.5 Flash)', linkText: '👉 API Key Gratis: aistudio.google.com' },
+      groq: { name: 'Groq (Llama 3.3 70B)', linkText: '👉 API Key Gratis: console.groq.com' },
+      openrouter: { name: 'OpenRouter (DeepSeek V3)', linkText: '👉 API Key: openrouter.ai' },
+      openai: { name: 'OpenAI (GPT-4o-mini)', linkText: '👉 API Key: platform.openai.com' }
+    };
+
     function getTradeKey() { return `apt_trades_${currentRole || 'trader'}`; }
     function getBalKey() { return `apt_bal_${currentRole || 'trader'}`; }
+    const NEWS_STORAGE_KEY = 'apt_news_archive_v1';
 
     document.addEventListener('DOMContentLoaded', () => {
       if (currentRole) {
@@ -421,7 +726,225 @@
         loadAndRender();
       }
       updateCurrencyUI();
+      updateActiveLlmBadge();
+      renderNewsArchiveTable();
     });
+
+    // --- FITUR DATABASE NEWS MAKROEKONOMI ---
+    function getNewsData() {
+      return JSON.parse(localStorage.getItem(NEWS_STORAGE_KEY) || '[]');
+    }
+
+    function handleSaveNews(e) {
+      e.preventDefault();
+      const newsItem = {
+        id: Date.now(),
+        event: document.getElementById('newsEvent').value.trim(),
+        currency: document.getElementById('newsCurrency').value.toUpperCase().trim(),
+        date: document.getElementById('newsDate').value,
+        prev: document.getElementById('newsPrev').value.trim(),
+        forecast: document.getElementById('newsForecast').value.trim(),
+        actual: document.getElementById('newsActual').value.trim(),
+        deviation: document.getElementById('newsDeviation').value,
+        marketBehavior: document.getElementById('newsMarketBehavior').value,
+        notes: document.getElementById('newsNotes').value.trim()
+      };
+
+      const data = getNewsData();
+      data.unshift(newsItem);
+      localStorage.setItem(NEWS_STORAGE_KEY, JSON.stringify(data));
+
+      e.target.reset();
+      renderNewsArchiveTable();
+      alert('✅ Berhasil menyimpan data rilis berita ke arsip evaluasi!');
+    }
+
+    function deleteNews(id) {
+      if (confirm('Hapus catatan rilis berita ini dari arsip?')) {
+        let data = getNewsData().filter(n => n.id !== id);
+        localStorage.setItem(NEWS_STORAGE_KEY, JSON.stringify(data));
+        renderNewsArchiveTable();
+      }
+    }
+
+    function renderNewsArchiveTable() {
+      const tbody = document.getElementById('newsArchiveTbody');
+      const data = getNewsData();
+      if (!tbody) return;
+
+      tbody.innerHTML = data.length ? data.map(n => {
+        let devBadge = '';
+        if (n.deviation === 'BULLISH_BETTER') devBadge = '<span class="text-emerald-400 font-bold">🟢 Lebih Bagus</span>';
+        else if (n.deviation === 'BEARISH_WORSE') devBadge = '<span class="text-rose-400 font-bold">🔴 Lebih Buruk</span>';
+        else devBadge = '<span class="text-slate-400">⚪ Sesuai Ekspektasi</span>';
+
+        return `
+          <tr class="hover:bg-slate-950/40">
+            <td class="py-2.5 text-slate-400">${n.date}</td>
+            <td class="py-2.5 font-bold text-white">${n.event}</td>
+            <td class="py-2.5 text-sky-400">${n.currency}</td>
+            <td class="py-2.5 text-slate-300">
+              ${n.prev} / ${n.forecast} → <strong class="text-white">${n.actual}</strong> (${devBadge})
+            </td>
+            <td class="py-2.5 text-amber-300">${n.marketBehavior}</td>
+            <td class="py-2.5 text-slate-400 max-w-xs truncate" title="${n.notes}">${n.notes || '-'}</td>
+            <td class="py-2.5 text-center">
+              <button onclick="deleteNews(${n.id})" class="text-rose-400 hover:text-rose-300 text-xs px-2 py-1">✕</button>
+            </td>
+          </tr>
+        `;
+      }).join('') : '<tr><td colspan="7" class="py-4 text-center text-slate-500">Belum ada arsip data berita tersimpan.</td></tr>';
+    }
+
+    function loadSampleNewsData() {
+      const samples = [
+        {
+          id: 101,
+          event: "US Non-Farm Payrolls (NFP)",
+          currency: "USD / XAUUSD",
+          date: "2026-09-04",
+          prev: "142K",
+          forecast: "160K",
+          actual: "254K",
+          deviation: "BULLISH_BETTER",
+          marketBehavior: "Spike Turun lalu Reversal Naik",
+          notes: "Emas XAUUSD terjun 110 pip di menit 1-5 menguji area demand 2620, lalu ditarik naik kuat 190 pip setelah pasar mencerna revisi upah kerja."
+        },
+        {
+          id: 102,
+          event: "US Core CPI m/m",
+          currency: "USD / EURUSD",
+          date: "2026-09-11",
+          prev: "0.2%",
+          forecast: "0.2%",
+          actual: "0.3%",
+          deviation: "BULLISH_BETTER",
+          marketBehavior: "Dump Kuat Satu Arah (Trending)",
+          notes: "Inflasi tetap kaku. Dolar AS menguat drastis sepanjang sesi New York tanpa memberikan koreksi pullback berarti."
+        }
+      ];
+      localStorage.setItem(NEWS_STORAGE_KEY, JSON.stringify(samples));
+      renderNewsArchiveTable();
+      alert('💡 2 Sampel data berita historis (NFP & CPI) berhasil dimuat!');
+    }
+
+    // --- MULTI-LLM LOGIC ---
+    function getSelectedLlmProvider() {
+      return localStorage.getItem('apt_selected_provider') || 'gemini';
+    }
+
+    function toggleLlmSettingsModal(show) {
+      const modal = document.getElementById('llmSettingsModal');
+      modal.classList.toggle('hidden', !show);
+      if (show) {
+        const prov = getSelectedLlmProvider();
+        document.getElementById('llmProviderSelect').value = prov;
+        handleLlmProviderChange();
+      }
+    }
+
+    function handleLlmProviderChange() {
+      const prov = document.getElementById('llmProviderSelect').value;
+      const keyInput = document.getElementById('llmApiKeyInput');
+      const help = document.getElementById('llmKeyHelpText');
+      keyInput.value = localStorage.getItem(`apt_key_${prov}`) || '';
+      help.textContent = LLM_PROVIDERS[prov].linkText;
+    }
+
+    function saveLlmSettings() {
+      const prov = document.getElementById('llmProviderSelect').value;
+      const key = document.getElementById('llmApiKeyInput').value.trim();
+      localStorage.setItem('apt_selected_provider', prov);
+      if (key) localStorage.setItem(`apt_key_${prov}`, key);
+      toggleLlmSettingsModal(false);
+      updateActiveLlmBadge();
+      alert(`✅ Pengaturan AI disimpan: Menggunakan ${LLM_PROVIDERS[prov].name}`);
+    }
+
+    function updateActiveLlmBadge() {
+      const prov = getSelectedLlmProvider();
+      const badge = document.getElementById('activeLlmBadge');
+      if (badge && LLM_PROVIDERS[prov]) badge.textContent = LLM_PROVIDERS[prov].name;
+    }
+
+    async function sendMultiLlmMessage() {
+      const input = document.getElementById('aiInputPrompt');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const box = document.getElementById('aiChatBox');
+      box.innerHTML += `<div class="bg-sky-500/20 text-sky-200 p-2.5 rounded-2xl text-right">${text}</div>`;
+      input.value = '';
+      box.scrollTop = box.scrollHeight;
+
+      const provider = getSelectedLlmProvider();
+      const apiKey = localStorage.getItem(`apt_key_${provider}`);
+
+      if (!apiKey) {
+        setTimeout(() => {
+          box.innerHTML += `<div class="bg-slate-900 border border-slate-800 p-2.5 rounded-2xl text-slate-300">💡 <strong>Belum ada API Key untuk ${LLM_PROVIDERS[provider].name}.</strong><br><br>Ketuk <strong>⚙️️ Pengaturan AI</strong> di atas untuk memasukkan API Key gratis Anda.</div>`;
+          box.scrollTop = box.scrollHeight;
+        }, 400);
+        return;
+      }
+box.innerHTML += `<div id="aiLoadingIndicator" class="text-slate-500 italic p-2">${LLM_PROVIDERS[provider].name} sedang menganalisis...</div>`;
+      box.scrollTop = box.scrollHeight;
+
+      const systemPrompt = "Kamu adalah asisten mentor trading profesional yang disiplin, ramah, ahli membaca dampak news makroekonomi dan manajemen risiko.";
+
+      try {
+        let reply = '';
+        if (provider === 'gemini') {
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ contents: [{ parts: [{ text: `${systemPrompt}\n\nPertanyaan: ${text}` }] }] })
+          });
+          const data = await res.json();
+          reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Tidak ada balasan dari Gemini.';
+        } else if (provider === 'groq') {
+          const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+            body: JSON.stringify({
+              model: 'llama-3.3-70b-versatile',
+              messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: text }]
+            })
+          });
+          const data = await res.json();
+          reply = data.choices?.[0]?.message?.content || data.error?.message || 'Gagal memproses respon dari Groq.';
+        } else if (provider === 'openrouter') {
+          const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+            body: JSON.stringify({
+              model: 'deepseek/deepseek-chat',
+              messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: text }]
+            })
+          });
+          const data = await res.json();
+          reply = data.choices?.[0]?.message?.content || data.error?.message || 'Gagal memproses respon dari OpenRouter.';
+        } else if (provider === 'openai') {
+          const res = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+            body: JSON.stringify({
+              model: 'gpt-4o-mini',
+              messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: text }]
+            })
+          });
+          const data = await res.json();
+          reply = data.choices?.[0]?.message?.content || data.error?.message || 'Gagal memproses respon dari OpenAI.';
+        }
+
+        document.getElementById('aiLoadingIndicator')?.remove();
+        box.innerHTML += `<div class="bg-slate-900 border border-slate-800 p-2.5 rounded-2xl text-slate-200"><span class="text-[10px] text-sky-400 font-bold block mb-1">[${LLM_PROVIDERS[provider].name}]</span>${reply.replace(/\n/g, '<br>')}</div>`;
+      } catch (err) {
+        document.getElementById('aiLoadingIndicator')?.remove();
+        box.innerHTML += `<div class="bg-rose-500/20 text-rose-300 p-2.5 rounded-2xl">Koneksi ke ${LLM_PROVIDERS[provider].name} gagal. Periksa API Key atau internet Anda.</div>`;
+      }
+      box.scrollTop = box.scrollHeight;
+    }
 
     // --- FITUR AUDIO & MOOD MUSIC ---
     function playPresetMood(moodKey) {
@@ -434,7 +957,7 @@
         document.getElementById('playerTrackTitle').textContent = `Sedang Memutar: ${preset.name}`;
         document.getElementById('mainPlayPauseBtn').textContent = '⏸ Jeda Musik';
       }).catch(() => {
-        document.getElementById('playerTrackTitle').textContent = `Memuat aliran audio...`;
+        document.getElementById('playerTrackTitle').textContent = `Memuat audio...`;
       });
     }
 
@@ -453,19 +976,12 @@
     function toggleAudioPlayback() {
       const audio = document.getElementById('globalAudioPlayer');
       const btn = document.getElementById('mainPlayPauseBtn');
-      if (!audio.src) {
-        playPresetMood('lofi');
-        return;
-      }
-      if (audio.paused) {
-        audio.play();
-        btn.textContent = '⏸ Jeda Musik';
-      } else {
-        audio.pause();
-        btn.textContent = '▶ Lanjutkan Musik';
-      }
+      if (!audio.src) { playPresetMood('lofi'); return; }
+      if (audio.paused) { audio.play(); btn.textContent = '⏸ Jeda Musik'; }
+      else { audio.pause(); btn.textContent = '▶ Lanjutkan Musik'; }
     }
-    // --- SISTEM LOGIN & SANDI MANDIRI ---
+
+    // --- AUTH & LOGIN ---
     function handleRoleRadioChange() {
       const isAdmin = document.getElementById('roleAdmin').checked;
       const pinBox = document.getElementById('adminPinBox');
@@ -476,10 +992,10 @@
         pinBox.classList.remove('hidden');
         const saved = localStorage.getItem('apt_admin_password');
         if (!saved) {
-          document.getElementById('pinBoxLabel').textContent = 'Buat Sandi Admin Baru Anda';
-          document.getElementById('pinHintText').textContent = '*Sandi yang Anda ketik sekarang akan tersimpan sebagai sandi pribadi Anda.';
+          document.getElementById('pinBoxLabel').textContent = 'Buat Sandi Admin Baru';
+          document.getElementById('pinHintText').textContent = '*Sandi yang Anda ketik sekarang akan tersimpan permanen.';
         } else {
-          document.getElementById('pinBoxLabel').textContent = 'Masukkan Sandi Admin Anda';
+          document.getElementById('pinBoxLabel').textContent = 'Masukkan Sandi Admin';
           document.getElementById('pinHintText').textContent = '*Ketik sandi rahasia yang telah Anda tetapkan.';
         }
       } else {
@@ -534,7 +1050,7 @@
       }
     }
 
-    // --- MENU TITIK TIGA (⋮) ---
+    // --- MENU TITIK TIGA (⋮) & VIEW SWITCHER ---
     function toggleSideMenu(open) {
       document.getElementById('sideMenuModal').classList.toggle('hidden', !open);
     }
@@ -545,11 +1061,12 @@
     }
 
     function openView(v) {
-      ['dashboard', 'newTrade', 'journal', 'musicPlayer', 'aiAssistant', 'adminPanel', 'settings'].forEach(id => {
+      ['dashboard', 'newTrade', 'journal', 'newsArchive', 'brokerWiki', 'learningHub', 'aiAssistant', 'musicPlayer', 'adminPanel', 'settings'].forEach(id => {
         const el = document.getElementById(`view-${id}`);
         if (el) el.classList.toggle('hidden', id !== v);
       });
       if (v === 'dashboard') renderEquityChart();
+      if (v === 'newsArchive') renderNewsArchiveTable();
     }
 
     // --- UPLOAD SCREENSHOT ---
@@ -586,52 +1103,7 @@
       document.getElementById('imageViewerModal').classList.add('hidden');
     }
 
-    // --- AI MENTOR (GEMINI) ---
-    function promptGeminiApiKey() {
-      const cur = localStorage.getItem('gemini_api_key') || '';
-      const key = prompt('Masukkan Gemini API Key gratis Anda (dapatkan di aistudio.google.com):', cur);
-      if (key !== null) { localStorage.setItem('gemini_api_key', key.trim()); alert('API Key tersimpan!'); }
-    }
-
-    async function sendAiMessage() {
-      const input = document.getElementById('aiInputPrompt');
-      const text = input.value.trim();
-      if (!text) return;
-      const box = document.getElementById('aiChatBox');
-      box.innerHTML += `<div class="bg-sky-500/20 text-sky-200 p-2.5 rounded-2xl text-right">${text}</div>`;
-      input.value = '';
-      box.scrollTop = box.scrollHeight;
-
-      const apiKey = localStorage.getItem('gemini_api_key');
-      if (!apiKey) {
-        setTimeout(() => {
-          box.innerHTML += `<div class="bg-slate-900 border border-slate-800 p-2.5 rounded-2xl text-slate-300">💡 <strong>Tips:</strong> Masukkan API Key Anda via tombol <strong>Set API Key</strong> di atas untuk jawaban penuh.<br><br>Saran: Batasi risiko maksimal 1–2% per transaksi dan selalu pasang Stop Loss!</div>`;
-          box.scrollTop = box.scrollHeight;
-        }, 500);
-        return;
-      }
-
-      box.innerHTML += `<div id="aiLoad" class="text-slate-500 italic p-2">Gemini sedang menganalisis...</div>`;
-      box.scrollTop = box.scrollHeight;
-
-      try {
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ contents: [{ parts: [{ text: `Kamu adalah asisten trading profesional berpengalaman. Pertanyaan: ${text}` }] }] })
-        });
-        const data = await res.json();
-        document.getElementById('aiLoad')?.remove();
-        const ans = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Gagal memproses jawaban.';
-        box.innerHTML += `<div class="bg-slate-900 border border-slate-800 p-2.5 rounded-2xl text-slate-200">${ans.replace(/\n/g, '<br>')}</div>`;
-      } catch (e) {
-        document.getElementById('aiLoad')?.remove();
-        box.innerHTML += `<div class="bg-rose-500/20 text-rose-300 p-2.5 rounded-2xl">Koneksi Gemini gagal: Cek API Key atau internet.</div>`;
-      }
-      box.scrollTop = box.scrollHeight;
-    }
-
-    // --- FORM SIMPAN TRANSAKSI ---
+    // --- FORM SIMPAN TRANSAKSI JURNAL ---
     function handleTradeSubmit(e) {
       e.preventDefault();
       const acc = document.getElementById('formAccountType').value;
@@ -650,7 +1122,8 @@
         raw,
         screenshot: currentImageBase64
       };
-    const trades = getTrades();
+
+      const trades = getTrades();
       trades.unshift(newTrade);
       localStorage.setItem(getTradeKey(), JSON.stringify(trades));
 
@@ -668,8 +1141,7 @@
         loadAndRender();
       }
     }
-
-    // --- PERHITUNGAN & DATA ---
+      // --- DATA & KALKULASI ---
     function getTrades() { return JSON.parse(localStorage.getItem(getTradeKey()) || '[]'); }
     function getInitialBalance() { return Number(localStorage.getItem(getBalKey()) || 10000); }
 
@@ -757,7 +1229,7 @@
       });
     }
 
-    // --- PENGATURAN & ADMIN ---
+    // --- ADMIN & PENGATURAN ---
     function changeAdminPassword() {
       const p = document.getElementById('newAdminPasswordInput').value.trim();
       if (!p) { alert('Sandi tidak boleh kosong!'); return; }
